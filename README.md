@@ -1,25 +1,33 @@
-A base WordPress theme based on Bootstrap.
+A base WordPress theme building on Twitter Bootstrap.
 
 **WARNING: Project in early development, not even vaguely ready to use!**
+
+Requires Wordpress 4.0, PHP 5.4 and Node.js. This theme is intended for developers running Linux, Unix or Mac OS, or with access to equivalent command-line tools.
 
 
 
 ## Overview
 
-This base theme is built to find the best balance between fast web pages, modern responsive design, and a rich options and a smooth development process. It involves a build step that compiles stylesheets, compiles and minifies scripts and so on. This theme is intended for developers running Linux, Unix or Mac OS, or with access to equivalent command-line tools.
+This base theme is built to find the best balance between fast web pages, responsive design, a rich set of options and a smooth development process.
 
-The contents of the `src` directories include:
+Using this theme involves a single build step (automated with Grunt) that compiles stylesheets, compiles and minifies scripts and so on.
+The result is fewer HTTP requests, less to download, and easier debugging.
+
+It builds the theme from files in a `src` directory, including:
 
  - Images to resize and compress
  - Javascript files to minify and combine
- - LESS stylesheets to compile to CSS
- - Fonts to bundle with the CSS
+ - LESS and/or SASS stylesheets to compile to CSS
+ - Fonts to bundle with the CSS, or links to externally hosted fonts
  - PHP library files to load on all pages, in admin, or on specific pages
+ - Templates, layout files and partials, in either PHP or a template language
  - Documentation in markdown to convert to HTML
  - Configuration, such as routes to create boilerplate PHP
- - The complete, unaltered source of Bootstrap
+ - The complete, unaltered source of Bootstrap or Bootstrap SASS
 
-These are all built in one step. Once the theme has been built, the `src` directory and parent theme are not needed, and can be excluded from deploying to live servers.
+The resulting theme should have all the features of Bootstrap, along with fewer HTTP requests, smaller documents etc.
+
+Once the theme has been built, the `src` directory and parent theme are not needed, and can be excluded from deploying to live servers.
 
 
 
@@ -45,21 +53,36 @@ Theme Name: My child theme
 
 ### 3. Build the theme
 
+#### Requirements
 
-#### Build once with make
+The build process uses Grunt and a number of other requirements. To ensure the requirements are installed:
 
 ```bash
-$ cd themes/my-child-theme
+$ cd themes/my-child-theme/src
+$ make install
+```
+
+#### Build once
+
+```bash
+$ cd themes/my-child-theme/src
 $ make
 ```
 
 This will put compiled theme files *outside* the `src` folder.
 
-#### Build continuously with Grunt
+#### Build continuously
 
-Alternatively, you can build using Grunt.
+```bash
+$ cd themes/my-child-theme/src
+$ make c
+```
 
+This will use Grunt to watch the filesystem for changes and rebuild the theme.
 
+### 4. Deploy
+
+Copy or symlink the theme into your WordPress installations's `wp-content/themes` directory. You do not need to copy the `src` directory, nor do you need the parent theme.
 
 
 ## Making your theme
@@ -75,11 +98,14 @@ The parent theme's `src` directory should contain these folders:
  - `bootstrap/`, containing one or more versions of the Bootstrap sources (LESS version)
    - `bootstrap-3.3.1`, or another more recent version of Bootstrap
  - `lib/`, containing PHP code to include in `functions.php`
+ - `templates/`, containing templates corresponding to posts and pages
  - `partials/`, containing fragments such as search results
  - `layouts/`, containing basic page layouts
  - `less/`, containing stylesheets in LESS format
  - `js/`, containing javascripts
  - `images/`, containing images
+ - `fonts/`, containing fonts
+ - `i18n/`, containing translation files
  - `docs/`, containing documentation in GitHub-flavour markdown
  - `build/`, containing the build script
 
@@ -88,7 +114,7 @@ A child theme's `src` directory can contain any, all or none of these (though it
 *Warning:* If you delete the `makefile` from your child theme's `src` directory, you will not be able to build the theme.
 
 
-### Usage sets
+### Visibility sets
 
 Several of the source folders (including `lib`, `less`, `js`) follow a similar pattern of subfolders:
 
@@ -112,39 +138,27 @@ Several of the source folders (including `lib`, `less`, `js`) follow a similar p
 
 In each of these cases, the files are automatically combined and loaded automatically. The theme's `functions.php`, `style.css` etc are built automatically to load these correctly.
 
+#### all
+
+These files are always loaded, whatever page you're looking at.
+
+#### main
+
+These files are loaded for any page *not* in the WordPress admin area.
+
+#### admin
+
+These files are loaded for any page in the WordPress admin area.
+
+#### editor
+
+These files are loaded into the WordPress visual editor in order to provide a better preview. This set only includes stylesheets, not javascripts.
+
+#### ie8 / ie9 / etc
+
+These files are loaded only on the relevant browsers. Note that server-side detection of browsers via user agent is imperfect and should be avoided.
 
 
-## Configuration files
+## Learn more
 
-### theme.conf
-
-Contains basic properties about the theme, such as its name, author, URL, copyright and license. This should be in the same syntax as the WordPress style header, but does not need to be wrapped in comments.
-
-```
-Theme Name: My child theme
-Theme URI: http://www.bang-on.net/
-Description: A basic wireframe-bootstrap theme for a Bang site
-Author: Bang Communications
-Author URI: http://www.bang-on.net/
-Version: 1.0
-Tags: wireframe
-License: None
-License URI: None
-```
-
-### build.conf
-
-Contains settings to configure the build tool, such as which version of the bootstrap framework to use. This should be in key-pair syntax.
-
-```ini
-bootstrap = bootstrap-3.3.1
-```
-
-### routes.conf
-
-Contains routes, in a simple syntax
-
-```
-GET /patients/:id patient.php
-```
-
+...

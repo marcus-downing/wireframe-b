@@ -43,29 +43,37 @@
                 </h3>
               
               <div class="markdown-body entry-content">
-                <p>A base WordPress theme based on Bootstrap.</p>
+                <p>A base WordPress theme building on Twitter Bootstrap.</p>
 
 <p><strong>WARNING: Project in early development, not even vaguely ready to use!</strong></p>
+
+<p>Requires Wordpress 4.0, PHP 5.4 and Node.js. This theme is intended for developers running Linux, Unix or Mac OS, or with access to equivalent command-line tools.</p>
 
 <h2>
 <a id="user-content-overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
 
-<p>This base theme is built to find the best balance between fast web pages, modern responsive design, and a rich options and a smooth development process. It involves a build step that compiles stylesheets, compiles and minifies scripts and so on. This theme is intended for developers running Linux, Unix or Mac OS, or with access to equivalent command-line tools.</p>
+<p>This base theme is built to find the best balance between fast web pages, responsive design, a rich set of options and a smooth development process.</p>
 
-<p>The contents of the <code>src</code> directories include:</p>
+<p>Using this theme involves a single build step (automated with Grunt) that compiles stylesheets, compiles and minifies scripts and so on.
+The result is fewer HTTP requests, less to download, and easier debugging.</p>
+
+<p>It builds the theme from files in a <code>src</code> directory, including:</p>
 
 <ul>
 <li>Images to resize and compress</li>
 <li>Javascript files to minify and combine</li>
-<li>LESS stylesheets to compile to CSS</li>
-<li>Fonts to bundle with the CSS</li>
+<li>LESS and/or SASS stylesheets to compile to CSS</li>
+<li>Fonts to bundle with the CSS, or links to externally hosted fonts</li>
 <li>PHP library files to load on all pages, in admin, or on specific pages</li>
+<li>Templates, layout files and partials, in either PHP or a template language</li>
 <li>Documentation in markdown to convert to HTML</li>
 <li>Configuration, such as routes to create boilerplate PHP</li>
-<li>The complete, unaltered source of Bootstrap</li>
+<li>The complete, unaltered source of Bootstrap or Bootstrap SASS</li>
 </ul>
 
-<p>These are all built in one step. Once the theme has been built, the <code>src</code> directory and parent theme are not needed, and can be excluded from deploying to live servers.</p>
+<p>The resulting theme should have all the features of Bootstrap, along with fewer HTTP requests, smaller documents etc.</p>
+
+<p>Once the theme has been built, the <code>src</code> directory and parent theme are not needed, and can be excluded from deploying to live servers.</p>
 
 <h2>
 <a id="user-content-getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h2>
@@ -110,17 +118,33 @@
 <a id="user-content-3-build-the-theme" class="anchor" href="#3-build-the-theme" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. Build the theme</h3>
 
 <h4>
-<a id="user-content-build-once-with-make" class="anchor" href="#build-once-with-make" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build once with make</h4>
+<a id="user-content-requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h4>
 
-<div class="highlight highlight-bash"><pre>$ <span class="pl-s3">cd</span> themes/my-child-theme
+<p>The build process uses Grunt and a number of other requirements. To ensure the requirements are installed:</p>
+
+<div class="highlight highlight-bash"><pre>$ <span class="pl-s3">cd</span> themes/my-child-theme/src
+$ make install</pre></div>
+
+<h4>
+<a id="user-content-build-once" class="anchor" href="#build-once" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build once</h4>
+
+<div class="highlight highlight-bash"><pre>$ <span class="pl-s3">cd</span> themes/my-child-theme/src
 $ make</pre></div>
 
 <p>This will put compiled theme files <em>outside</em> the <code>src</code> folder.</p>
 
 <h4>
-<a id="user-content-build-continuously-with-grunt" class="anchor" href="#build-continuously-with-grunt" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build continuously with Grunt</h4>
+<a id="user-content-build-continuously" class="anchor" href="#build-continuously" aria-hidden="true"><span class="octicon octicon-link"></span></a>Build continuously</h4>
 
-<p>Alternatively, you can build using Grunt.</p>
+<div class="highlight highlight-bash"><pre>$ <span class="pl-s3">cd</span> themes/my-child-theme/src
+$ make c</pre></div>
+
+<p>This will use Grunt to watch the filesystem for changes and rebuild the theme.</p>
+
+<h3>
+<a id="user-content-4-deploy" class="anchor" href="#4-deploy" aria-hidden="true"><span class="octicon octicon-link"></span></a>4. Deploy</h3>
+
+<p>Copy or symlink the theme into your WordPress installations's <code>wp-content/themes</code> directory. You do not need to copy the <code>src</code> directory, nor do you need the parent theme.</p>
 
 <h2>
 <a id="user-content-making-your-theme" class="anchor" href="#making-your-theme" aria-hidden="true"><span class="octicon octicon-link"></span></a>Making your theme</h2>
@@ -155,6 +179,8 @@ $ make</pre></div>
 <code>lib/</code>, containing PHP code to include in <code>functions.php</code>
 </li>
 <li>
+<code>templates/</code>, containing templates corresponding to posts and pages</li>
+<li>
 <code>partials/</code>, containing fragments such as search results</li>
 <li>
 <code>layouts/</code>, containing basic page layouts</li>
@@ -164,6 +190,10 @@ $ make</pre></div>
 <code>js/</code>, containing javascripts</li>
 <li>
 <code>images/</code>, containing images</li>
+<li>
+<code>fonts/</code>, containing fonts</li>
+<li>
+<code>i18n/</code>, containing translation files</li>
 <li>
 <code>docs/</code>, containing documentation in GitHub-flavour markdown</li>
 <li>
@@ -175,7 +205,7 @@ $ make</pre></div>
 <p><em>Warning:</em> If you delete the <code>makefile</code> from your child theme's <code>src</code> directory, you will not be able to build the theme.</p>
 
 <h3>
-<a id="user-content-usage-sets" class="anchor" href="#usage-sets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage sets</h3>
+<a id="user-content-visibility-sets" class="anchor" href="#visibility-sets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Visibility sets</h3>
 
 <p>Several of the source folders (including <code>lib</code>, <code>less</code>, <code>js</code>) follow a similar pattern of subfolders:</p>
 
@@ -227,39 +257,35 @@ $ make</pre></div>
 
 <p>In each of these cases, the files are automatically combined and loaded automatically. The theme's <code>functions.php</code>, <code>style.css</code> etc are built automatically to load these correctly.</p>
 
+<h4>
+<a id="user-content-all" class="anchor" href="#all" aria-hidden="true"><span class="octicon octicon-link"></span></a>all</h4>
+
+<p>These files are always loaded, whatever page you're looking at.</p>
+
+<h4>
+<a id="user-content-main" class="anchor" href="#main" aria-hidden="true"><span class="octicon octicon-link"></span></a>main</h4>
+
+<p>These files are loaded for any page <em>not</em> in the WordPress admin area.</p>
+
+<h4>
+<a id="user-content-admin" class="anchor" href="#admin" aria-hidden="true"><span class="octicon octicon-link"></span></a>admin</h4>
+
+<p>These files are loaded for any page in the WordPress admin area.</p>
+
+<h4>
+<a id="user-content-editor" class="anchor" href="#editor" aria-hidden="true"><span class="octicon octicon-link"></span></a>editor</h4>
+
+<p>These files are loaded into the WordPress visual editor in order to provide a better preview. This set only includes stylesheets, not javascripts.</p>
+
+<h4>
+<a id="user-content-ie8--ie9--etc" class="anchor" href="#ie8--ie9--etc" aria-hidden="true"><span class="octicon octicon-link"></span></a>ie8 / ie9 / etc</h4>
+
+<p>These files are loaded only on the relevant browsers. Note that server-side detection of browsers via user agent is imperfect and should be avoided.</p>
+
 <h2>
-<a id="user-content-configuration-files" class="anchor" href="#configuration-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration files</h2>
+<a id="user-content-learn-more" class="anchor" href="#learn-more" aria-hidden="true"><span class="octicon octicon-link"></span></a>Learn more</h2>
 
-<h3>
-<a id="user-content-themeconf" class="anchor" href="#themeconf" aria-hidden="true"><span class="octicon octicon-link"></span></a>theme.conf</h3>
-
-<p>Contains basic properties about the theme, such as its name, author, URL, copyright and license. This should be in the same syntax as the WordPress style header, but does not need to be wrapped in comments.</p>
-
-<pre><code>Theme Name: My child theme
-Theme URI: http://www.bang-on.net/
-Description: A basic wireframe-bootstrap theme for a Bang site
-Author: Bang Communications
-Author URI: http://www.bang-on.net/
-Version: 1.0
-Tags: wireframe
-License: None
-License URI: None
-</code></pre>
-
-<h3>
-<a id="user-content-buildconf" class="anchor" href="#buildconf" aria-hidden="true"><span class="octicon octicon-link"></span></a>build.conf</h3>
-
-<p>Contains settings to configure the build tool, such as which version of the bootstrap framework to use. This should be in key-pair syntax.</p>
-
-<div class="highlight highlight-ini"><pre><span class="pl-k">bootstrap</span> = bootstrap-3.3.1</pre></div>
-
-<h3>
-<a id="user-content-routesconf" class="anchor" href="#routesconf" aria-hidden="true"><span class="octicon octicon-link"></span></a>routes.conf</h3>
-
-<p>Contains routes, in a simple syntax</p>
-
-<pre><code>GET /patients/:id patient.php
-</code></pre>
+<p>...</p>
 
               </div>
             </div>
