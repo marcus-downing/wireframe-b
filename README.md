@@ -1,5 +1,7 @@
 A base WordPress theme based on Bootstrap.
 
+**WARNING: Project in early development, not even vaguely ready to use!**
+
 
 
 ## Overview
