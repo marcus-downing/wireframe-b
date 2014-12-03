@@ -1,4 +1,0 @@
-wireframe-b
-===========
-
-Wireframe b
