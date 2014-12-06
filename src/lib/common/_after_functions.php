@@ -2,7 +2,7 @@
 
 
 if (is_admin()) {
-  include "admin.php";
+  include "lib/admin.php";
 } else {
-  include "main.php";
+  include "lib/main.php";
 }
