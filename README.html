@@ -52,12 +52,17 @@
 <h2>
 <a id="user-content-overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
 
-<p>This base theme is built to find the best balance between fast web pages, responsive design, a rich set of options and a smooth development process.</p>
+<p>This base theme is built to find the best balance between fast web pages, responsive design, and a smooth development process. Its benefits include:</p>
 
-<p>Using this theme involves a single build step (automated with Grunt) that compiles stylesheets, compiles and minifies scripts and so on.
-The result is fewer HTTP requests, less to download, and easier debugging.</p>
+<ul>
+<li>Fewer HTTP requests</li>
+<li>Smaller HTML, minified Javascript and CSS</li>
+<li>Easier separation of layout from content</li>
+<li>All the features of Bootstrap, with PHP helper functions</li>
+<li>Keep your private details private by not publishing the sources</li>
+</ul>
 
-<p>It builds the theme from files in a <code>src</code> directory, including:</p>
+<p>It does this with a build step (automated with Grunt) that compiles stylesheets, minifies scripts and so on. It takes files in a <code>src</code> directory, including:</p>
 
 <ul>
 <li>Images to resize and compress</li>
@@ -67,11 +72,18 @@ The result is fewer HTTP requests, less to download, and easier debugging.</p>
 <li>PHP library files to load on all pages, in admin, or on specific pages</li>
 <li>Templates, layout files and partials, in either PHP or a template language</li>
 <li>Documentation in markdown to convert to HTML</li>
-<li>Configuration, such as routes to create boilerplate PHP</li>
-<li>The complete, unaltered source of Bootstrap or Bootstrap SASS</li>
+<li>Configuration</li>
 </ul>
 
-<p>The resulting theme should have all the features of Bootstrap, along with fewer HTTP requests, smaller documents etc.</p>
+<p>Combined with files in the <code>src</code> directory of the parent theme:</p>
+
+<ul>
+<li>Default configuration</li>
+<li>Plenty of helpful library functions</li>
+<li>Useful LESS stylesheet mixins</li>
+<li>Libraries: lodash.js</li>
+<li>The complete, unaltered source of Bootstrap</li>
+</ul>
 
 <p>Once the theme has been built, the <code>src</code> directory and parent theme are not needed, and can be excluded from deploying to live servers.</p>
 
@@ -202,7 +214,7 @@ $ make c</pre></div>
 
 <p>A child theme's <code>src</code> directory can contain any, all or none of these (though it's expected to at least have a <code>theme.conf</code> giving it a name).</p>
 
-<p><em>Warning:</em> If you delete the <code>makefile</code> from your child theme's <code>src</code> directory, you will not be able to build the theme.</p>
+<p><em>Warning:</em> Your <code>src</code> folder will also contain files called <code>makefile</code>, <code>Gruntfile.js</code> and <code>packages.json</code>. Do not delete these.</p>
 
 <h3>
 <a id="user-content-visibility-sets" class="anchor" href="#visibility-sets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Visibility sets</h3>

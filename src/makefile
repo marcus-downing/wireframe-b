@@ -1,8 +1,8 @@
 all:
 	build/build.sh
 
-install:
-	build/install.sh
+requirements:
+	build/install-requirements.sh
 
 c:
 	build/build.sh "c"

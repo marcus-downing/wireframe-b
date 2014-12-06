@@ -1,19 +1,21 @@
 A base WordPress theme building on Twitter Bootstrap.
 
+Rather than interactive design tools, this theme is intended for developers of high-performance themes, running Linux, Unix, Mac OS or similar. It requires Wordpress 4.0, PHP 5.4 and Node.js.
+
 **WARNING: Project in early development, not even vaguely ready to use!**
-
-Requires Wordpress 4.0, PHP 5.4 and Node.js. This theme is intended for developers running Linux, Unix or Mac OS, or with access to equivalent command-line tools.
-
 
 
 ## Overview
 
-This base theme is built to find the best balance between fast web pages, responsive design, a rich set of options and a smooth development process.
+This base theme is built to find the best balance between fast web pages, responsive design, and a smooth development process. Its benefits include:
 
-Using this theme involves a single build step (automated with Grunt) that compiles stylesheets, compiles and minifies scripts and so on.
-The result is fewer HTTP requests, less to download, and easier debugging.
+ - Fewer HTTP requests
+ - Smaller HTML, minified Javascript and CSS
+ - Easier separation of layout from content
+ - All the features of Bootstrap, with PHP helper functions
+ - Keep your private details private by not publishing the sources
 
-It builds the theme from files in a `src` directory, including:
+It does this with a build step (automated with Grunt) that compiles stylesheets, minifies scripts and so on. It takes files in a `src` directory, including:
 
  - Images to resize and compress
  - Javascript files to minify and combine
@@ -22,16 +24,30 @@ It builds the theme from files in a `src` directory, including:
  - PHP library files to load on all pages, in admin, or on specific pages
  - Templates, layout files and partials, in either PHP or a template language
  - Documentation in markdown to convert to HTML
- - Configuration, such as routes to create boilerplate PHP
- - The complete, unaltered source of Bootstrap or Bootstrap SASS
+ - Configuration
 
-The resulting theme should have all the features of Bootstrap, along with fewer HTTP requests, smaller documents etc.
+Combined with files in the `src` directory of the parent theme:
+
+ - Default configuration
+ - Plenty of helpful library functions
+ - Useful LESS stylesheet mixins
+ - Libraries: lodash.js
+ - The complete, unaltered source of Bootstrap
 
 Once the theme has been built, the `src` directory and parent theme are not needed, and can be excluded from deploying to live servers.
 
 
 
 ## Getting started
+
+### Requirements
+
+The build process uses Node.js, Grunt and a number of other tools. To ensure the requirements are met, run this on the command line:
+
+```bash
+$ cd themes/wireframe-b/src
+$ make requirements
+```
 
 ### 1. Create a child theme
 
@@ -52,15 +68,6 @@ Theme Name: My child theme
 ```
 
 ### 3. Build the theme
-
-#### Requirements
-
-The build process uses Grunt and a number of other requirements. To ensure the requirements are installed:
-
-```bash
-$ cd themes/my-child-theme/src
-$ make install
-```
 
 #### Build once
 
@@ -111,7 +118,7 @@ The parent theme's `src` directory should contain these folders:
 
 A child theme's `src` directory can contain any, all or none of these (though it's expected to at least have a `theme.conf` giving it a name).
 
-*Warning:* If you delete the `makefile` from your child theme's `src` directory, you will not be able to build the theme.
+*Warning:* Your `src` folder will also contain files called `makefile`, `Gruntfile.js` and `packages.json`. Do not delete these.
 
 
 ### Visibility sets
@@ -136,7 +143,7 @@ Several of the source folders (including `lib`, `less`, `js`) follow a similar p
    - `all/`, containing javascripts to run on all pages, whether admin or not
    - ...
 
-In each of these cases, the files are automatically combined and loaded automatically. The theme's `functions.php`, `style.css` etc are built automatically to load these correctly.
+In each of these cases, the files are automatically combined and loaded in the correct places. The files `functions.php`, `style.css`, `theme.js` etc are built to load correctly, so the server doesn't need to look up any files dynamically.
 
 #### all
 
@@ -158,7 +165,9 @@ These files are loaded into the WordPress visual editor in order to provide a be
 
 These files are loaded only on the relevant browsers. Note that server-side detection of browsers via user agent is imperfect and should be avoided.
 
+#### 
+
 
 ## Learn more
 
-...
+The theme's `docs` folder contains documentation...
