@@ -10,34 +10,57 @@ var processPHPfile = function(src, filepath) {
 };
 
 module.exports = function (grunt) {
+  //  read script config
+  var bootstrap = "bootstrap/bootstrap-3.3.1";
+
+
+  var concat_php_options = {
+    banner: '<?php\n',
+    process: processPHPfile
+  };
+
+  var concat_js_options = {
+    separator: ';\n\n',
+    sourceMap: true
+  };
+
+  //  configure the tasks
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     concat: {
 
-      main_functions: {
-        options: {
-          banner: '<?php\n',
-          process: processPHPfile,
-        },
+      //  build functions.php, autoloading the appropriate bits of everything
+      functions_php: {
+        options: concat_php_options,
         src: [
           'lib/common/_functions.php',
           'lib/all/*.php',
-          'lib/common/_before_admin.php',
-          'lib/admin/*.php',
-          'lib/common/_after_admin.php',
-          'lib/main/*.php',
-          'lib/common/_after_main.php'
+          'lib/common/_after_functions.php'
         ],
         dest: '../functions.php'
       },
 
-      main_scripts: {
-        options: {
-          'separator': ';\n\n',
-          'sourceMap': true
-        },
+      main_php: {
+        options: concat_php_options,
         src: [
+          'lib/main/*.php'
+        ],
+        dest: '../main.php',
+      },
+
+      admin_php: {
+        options: concat_php_options,
+        src: [
+          'lib/admin/*.php'
+        ],
+        dest: '../admin.php',
+      },
+
+      main_scripts: {
+        options: concat_js_options,
+        src: [
+          bootstrap+'/dist/js/bootstrap.min.js',
           'js/all/*.js',
           'js/main/*.js'
         ],
@@ -47,6 +70,9 @@ module.exports = function (grunt) {
     },
 
     uglify: {
+      options: {
+        sourceMap: true
+      },
       main: {
         src: '../main.js',
         dest: '../main.min.js'
@@ -69,6 +95,19 @@ module.exports = function (grunt) {
           spawn: false,
         },
       }
+    },
+
+    markdown: {
+      all: {
+        files: [
+          {
+            expand: true,
+            src: 'docs/*.md',
+            dest: '../',
+            ext: '.html'
+          }
+        ]
+      }
     }
   });
 
@@ -76,9 +115,10 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-markdown');
 
   // actual tasks
-  grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('default', ['concat', 'uglify', 'markdown']);
 
 
 };
