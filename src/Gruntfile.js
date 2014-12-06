@@ -42,8 +42,11 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     clean: {
+      options: {
+        force: true,
+      },
       templates: ["../*.php", "!."]
-    }
+    },
 
     copy: {
       main: {
@@ -221,6 +224,7 @@ module.exports = function (grunt) {
   grunt.initConfig(grunt_config);
 
   // use these plugins
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -231,6 +235,7 @@ module.exports = function (grunt) {
 
   // actual tasks
   grunt.registerTask('default', [
+    'clean',
     // 'jshint', 
     'copy',
     'concat', 
