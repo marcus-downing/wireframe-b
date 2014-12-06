@@ -107,8 +107,8 @@ module.exports = function (grunt) {
         options: {
           paths: ["less/all", "less/common"],
           banner: stylebanner,
+          cleancss: true,
           // compress: true,
-          // cleancss: true
         },
         files: {
           "../style.css": [bootstrap+"/less/bootstrap.less", "less/all/*.less", "less/main/main.less"]
@@ -131,6 +131,17 @@ module.exports = function (grunt) {
         options: {
           spawn: false,
         },
+      }
+    },
+
+    imagemin: {
+      dynamic: {
+        files: [{
+          expand: true,
+          cwd: 'images/',
+          src: ['**/*.{png,jpg,gif}'],
+          dest: '../images'
+        }]
       }
     },
 
@@ -231,6 +242,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-markdown');
 
   // actual tasks
@@ -241,6 +253,7 @@ module.exports = function (grunt) {
     'concat', 
     'uglify', 
     'less',
+    'imagemin',
     'markdown'
   ]);
 
