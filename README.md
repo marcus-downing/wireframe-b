@@ -46,7 +46,7 @@ The build process uses Node.js, Grunt and a number of other tools. To ensure the
 
 ```bash
 $ cd themes/wireframe-b/src
-$ make requirements
+$ npm install
 ```
 
 ### 1. Create a child theme
@@ -67,13 +67,13 @@ Edit the file `my-child-theme/src/config/theme.conf`, changing at least this one
 Theme Name: My child theme
 ```
 
-### 3. Build the theme
+### 3. Build the child theme
 
 #### Build once
 
 ```bash
 $ cd themes/my-child-theme/src
-$ make
+$ grunt
 ```
 
 This will put compiled theme files *outside* the `src` folder.
