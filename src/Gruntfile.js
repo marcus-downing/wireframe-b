@@ -145,6 +145,17 @@ module.exports = function (grunt) {
       }
     },
 
+    webfont: {
+      icons: {
+        src: 'icons/*.svg',
+        dest: '../fonts',
+        options: {
+          syntax: 'bootstrap',
+          autoHint: false,
+        }
+      }
+    },
+
     markdown: {
       all: {
         files: [
@@ -243,6 +254,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-webfont');
   grunt.loadNpmTasks('grunt-markdown');
 
   // actual tasks
@@ -254,6 +266,7 @@ module.exports = function (grunt) {
     'uglify', 
     'less',
     'imagemin',
+    'webfont',
     'markdown'
   ]);
 
