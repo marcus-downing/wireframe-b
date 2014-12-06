@@ -1,6 +1,24 @@
 <?php
 
-namespace wireframe_b;
+namespace wireframe_b\parts;
+
+/*
+  PARTS
+
+  Compose a page template by combining a layout with various parts: the main block, sidebars, nav, etc.
+  The final call should be to the `layout` which will actually write the page.
+
+
+  use wireframe_b\parts;
+
+  params(array(
+    'title' => $post->post_title.' by '.$author->display_name
+  ));
+  main('article');
+  sidebar('left', 'nav');
+  sidebar('right', 'no-ads');
+  layout('three');
+*/
 
 /*
   Include a partial file.
@@ -13,16 +31,22 @@ namespace wireframe_b;
   part(array('result', $post->post_type, $post_format), null);
 */
 function part($part, $params = null) {
+  global $wireframe_b_part_params;
+  $params = wp_parse_args($params, $wireframe_b_part_params);
   // $file = 
 }
 
 
 /*
-  
+  Set parameters that will be picked up by subsequent parts
+
+  params(array(
+    ''
+  ));
 */
-function set_part_parameters($params) {
+function params($params) {
   global $wireframe_b_part_params;
-  $wireframe_b_part_params = wp_parse_args($params, $wireframe_b_part_params);
+  $params = $wireframe_b_part_params = wp_parse_args($params, $wireframe_b_part_params);
 }
 
 
