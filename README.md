@@ -10,10 +10,12 @@ Rather than interactive design tools, this theme is intended for developers of h
 This base theme is built to find the best balance between fast web pages, responsive design, and a smooth development process. Its benefits include:
 
  - Fewer HTTP requests
- - Smaller HTML, minified Javascript and CSS
- - Easier separation of layout from content
+ - Smaller HTML, Javascript, CSS and images
+ - Clean separation of layout from content
  - All the features of Bootstrap, with PHP helper functions
  - Keep your private details private by not publishing the sources
+ - Handles fonts correctly, and builds an icon font from SVGs
+ - Fully i18n compatible
 
 It does this with a build step (automated with Grunt) that compiles stylesheets, minifies scripts and so on. It takes files in a `src` directory, including:
 
@@ -69,23 +71,12 @@ Theme Name: My child theme
 
 ### 3. Build the child theme
 
-#### Build once
-
 ```bash
 $ cd themes/my-child-theme/src
 $ grunt
 ```
 
 This will put compiled theme files *outside* the `src` folder.
-
-#### Build continuously
-
-```bash
-$ cd themes/my-child-theme/src
-$ make c
-```
-
-This will use Grunt to watch the filesystem for changes and rebuild the theme.
 
 ### 4. Deploy
 

@@ -119,10 +119,12 @@
 <p>This base theme is built to find the best balance between fast web pages, responsive design, and a smooth development process. Its benefits include:</p>
 <ul>
 <li>Fewer HTTP requests</li>
-<li>Smaller HTML, minified Javascript and CSS</li>
-<li>Easier separation of layout from content</li>
+<li>Smaller HTML, Javascript, CSS and images</li>
+<li>Clean separation of layout from content</li>
 <li>All the features of Bootstrap, with PHP helper functions</li>
 <li>Keep your private details private by not publishing the sources</li>
+<li>Handles fonts correctly, and builds an icon font from SVGs</li>
+<li>Fully i18n compatible</li>
 </ul>
 <p>It does this with a build step (automated with Grunt) that compiles stylesheets, minifies scripts and so on. It takes files in a <code>src</code> directory, including:</p>
 <ul>
@@ -168,14 +170,9 @@ $ npm install</code></pre>
 <p>Edit the file <code>my-child-theme/src/config/theme.conf</code>, changing at least this one line:</p>
 <pre><code>Theme Name: My child theme</code></pre>
 <h3 id="3-build-the-child-theme">3. Build the child theme</h3>
-<h4 id="build-once">Build once</h4>
 <pre><code class="lang-bash">$ cd themes/my-child-theme/src
 $ grunt</code></pre>
 <p>This will put compiled theme files <em>outside</em> the <code>src</code> folder.</p>
-<h4 id="build-continuously">Build continuously</h4>
-<pre><code class="lang-bash">$ cd themes/my-child-theme/src
-$ make c</code></pre>
-<p>This will use Grunt to watch the filesystem for changes and rebuild the theme.</p>
 <h3 id="4-deploy">4. Deploy</h3>
 <p>Copy or symlink the theme into your WordPress installations&#39;s <code>wp-content/themes</code> directory. You do not need to copy the <code>src</code> directory, nor do you need the parent theme.</p>
 <h2 id="making-your-theme">Making your theme</h2>
