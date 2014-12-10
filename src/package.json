@@ -1,5 +1,6 @@
 {
   "name": "wireframe-b",
+  "description": "Wireframe b theme toolkit",
   "version": "0.0.0",
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -17,5 +18,9 @@
 
     "lodash-node": "",
     "ini": "~1.3.2"
+  },
+  "options": {
+    "foo": "bar",
+    "bootstrap": "bootstrap-3.3.1"
   }
 }

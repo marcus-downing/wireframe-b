@@ -11,23 +11,31 @@ var processPHPfile = function(src, filepath) {
 
 module.exports = function (grunt) {
   var fs = require('fs')
+    , util = require('util')
     , ini = require('ini')
     , path = require('path');
 
   var _ = require('lodash-node');
 
-  var themeSource = grunt.sources[0];
-  var coreSource = grunt.sources[grunt.sources.length - 1];
 
-  console.log("Wb: Compiling theme: "+grunt.dest);
-  // console.log("Wb: Compiling theme: "+themeSource);
-  // console.log("Wb: Core source: "+coreSource);
+  //  read and merge options
+  var options = _(grunt.sources).map(function (src) {
+    var pkg = grunt.file.readJSON(src+'/package.json');
+    return pkg.options;
+  }).merge().value()[0];
+  _.defaults(options, {
+    'bootstrap': 'bootstrap-3.3.1'
+  });
+
+
+
+  var themeName = path.basename(grunt.dest);
+  console.log("Compiling theme "+themeName+" with options: "+JSON.stringify(options, null, 4));
   console.log("");
 
-  var bootstrap = "bootstrap-3.3.1";
 
 
-
+  //  funcitons to find files across multiple source folders
   grunt.locateFile = function (filename) {
     var fileVersions = _(grunt.sources).map(function (src) {
       return src+'/'+filename;
@@ -46,8 +54,7 @@ module.exports = function (grunt) {
     var sources = _(grunt.sources).map(function (src) {
       return src+'/'+path;
     }).filter(function (src) {
-      var stats = fs.statSync(src);
-      return stats.isDirectory();
+      return fs.statSync(src).isDirectory();
     }).value();
 
     var sets = {};
@@ -61,20 +68,63 @@ module.exports = function (grunt) {
     // ...
   };
 
-  grunt.locateSetFiles = function (path, set, key) {
+  grunt.locateSetFiles = function (path, set, pattern, key) {
+    // console.log("\nLocate set files: "+path+", "+set+", "+pattern+", "+key);
+    var sources = _(grunt.sources).map(function (src) {
+      return src+'/'+path+'/'+set;
+    }).filter(function (src) {
+      return fs.statSync(src).isDirectory();
+    });
+    // console.log(" in sources: "+sources);
 
-    // ...
+    if (!!key) {
+      var keyedSources = sources.map(function (src) {
+        return src+'/'+key;
+      }).filter(function (keyfile) {
+        // console.log("Checking keyed source: "+keyfile);
+        return grunt.file.exists(keyfile);
+      });
+
+      if (!keyedSources.isEmpty()) {
+        // console.log("Found keyed sources: "+keyedSources);
+        return [ keyedSources.first() ];
+      }
+    }
+
+    var names = _(sources).map(function (src) {
+      var files = fs.readdirSync(src);
+      files = _(files).filter(function (name) {
+        var filename = src+'/'+name;
+        return fs.statSync(filename).isFile();
+      });
+      return files;
+    }).flatten().filter(function (str) {
+      return str != "";
+    }).uniq();
+    if (names.isEmpty())
+      return [];
+
+    var files = names.map(function (name) {
+      return _(sources).map(function (src) {
+        return src+'/'+name;
+      }).filter(function (filename) {
+        return grunt.file.exists(filename);
+      }).first();
+    }).value();
+    // console.log("Found files: "+files);
+    return files;
   };
 
   //  basic information used by all the tasks
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    options: options
   });
 
   grunt.dirs = {
-    'theme_source': themeSource,
-    'core_source': coreSource,
-    'bootstrap': grunt.locateFile('bootstrap/'+bootstrap)
+    'themeSource': _.first(grunt.sources),
+    'coreSource': _.last(grunt.sources),
+    'bootstrap': grunt.locateFile('bootstrap/'+options.bootstrap)
   };
 
   //  read script config
