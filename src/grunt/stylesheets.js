@@ -1,49 +1,75 @@
+//  Compile LESS stylesheets
 module.exports = function (grunt, _) {
   grunt.loadNpmTasks('grunt-contrib-less');
+  var scheme = grunt.themeConfig.stylesheets;
+  var extension = (scheme == 'less') ? '.less' : '.scss';
+  var wildcard = '*'+extension;
 
-  //  the banner
-  var themeconf = grunt.file.read("config/theme.conf");
-  var stylebanner = "/*!\n"+themeconf+"\n*/\n\n";
 
+  //  build the theme's banner from the package contents
+  var pkg = _(grunt.sources).map(function (src) {
+    var pkg = grunt.file.readJSON(src+'/package.json');
+    return pkg.config;
+  }).merge().value()[0];
+
+  var themebanner = grunt.template.process("/*!\n"+
+    "Theme name: <%= pkg.name %>\n"+
+    "Theme URI: <%= pkg.homepage %>\n"+
+    "Description: <%= pkg.description %>\n"+
+    "Author: <%= pkg.author.name %>\n+"+
+    "Author URI: <%= pkg.author.url %>\n"+
+    "Version: <%= pkg.version %>\n"+
+    "Tags: <%= false %>\n"+
+    "License: <%= pkg.license %>\n"+
+    "License URI: <%= false %>\n"+
+    "\n*/\n", {
+      pkg: pkg
+    });
 
   //  locate files
   var base_files = [grunt.dirs.bootstrap+"/less/bootstrap.less"];
-  var all_files = grunt.locateSetFiles("less", "all", "*.less", "all.less");
-  var main_files = grunt.locateSetFiles("less", "main", "*.less", "main.less");
+  var all_files = grunt.locateSetFiles(scheme, "all", wildcard, "all"+extension);
+  var main_files = grunt.locateSetFiles(scheme, "main", wildcard, "main"+extension);
 
   var conf_files = {};
   conf_files[grunt.dest+"/style.css"] = _.union(base_files, all_files, main_files);
 
   //  options including includable paths
+  var include_paths = [scheme+"/all", scheme+"/common"]
   var less_main_options = {
-    paths: ["less/all", "less/common"],
-    banner: stylebanner,
+    paths: include_paths,
+    banner: themebanner,
     // cleancss: true,
     // compress: true,
   };
   var less_options = {
-    paths: ["less/all", "less/common"],
+    paths: include_paths,
     compress: true,
     cleancss: true
   };
 
   //  the config
-  grunt.config.merge({
-    less: {
-      main: {
-        options: less_main_options,
-        files: conf_files
+  if (scheme == 'less') {
+    grunt.config.merge({
+      less: {
+        main: {
+          options: less_main_options,
+          files: conf_files
+        },
       },
-    },
 
-    watch: {
-      stylesheets: {
-        files: _.union(all_files, main_files),
-        tasks: ['less'],
-        options: { spawn: false }
+      watch: {
+        stylesheets: {
+          files: _.union(all_files, main_files),
+          tasks: ['less']
+        }
       }
-    }
-  });
+    });
+  } else if (scheme == 'sass') {
+    // .. todo SASS
+  } else {
+    // .. todo ???
+  }
 
 /*
   editor_files = grunt.locateSetFiles("less", "editor", );

@@ -30,8 +30,7 @@ module.exports = function (grunt, _) {
     // watch: {
     //   javascripts: {
     //     files: _.union(all_files, main_files),
-    //     tasks: ['jshint', 'uglify'],
-    //     options: { spawn: false }
+    //     tasks: ['jshint', 'uglify']
     //   }
     // }
   });

@@ -2,6 +2,20 @@
   "name": "wireframe-b",
   "description": "Wireframe b theme toolkit",
   "version": "0.0.0",
+  "homepage": "https://github.com/marcusatbang/wireframe-b",
+  "repository": { 
+    "type" : "git",
+    "url" : "http://github.com/marcusatbang/wireframe-b.git"
+  },
+  "license": "none",
+  "author": {
+    "name" : "Marcus Downing",
+    "email" : "marcus@bang-on.net",
+    "url" : "http://www.bang-on.net/"
+  },
+  "directories": {
+    "docs": "docs"
+  },
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-clean": "~0.6.0",
@@ -19,8 +33,8 @@
     "lodash-node": "",
     "ini": "~1.3.2"
   },
-  "options": {
-    "foo": "bar",
-    "bootstrap": "bootstrap-3.3.1"
+  "config": {
+    "bootstrap": "bootstrap-3.3.1",
+    "stylesheets": "less"
   }
 }

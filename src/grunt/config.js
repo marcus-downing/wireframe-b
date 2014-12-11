@@ -19,18 +19,15 @@ module.exports = function (grunt) {
 
 
   //  read and merge options
-  var options = _(grunt.sources).map(function (src) {
+  grunt.themeConfig = _(grunt.sources).map(function (src) {
     var pkg = grunt.file.readJSON(src+'/package.json');
-    return pkg.options;
+    return pkg.config;
   }).merge().value()[0];
-  _.defaults(options, {
-    'bootstrap': 'bootstrap-3.3.1'
-  });
 
 
 
   var themeName = path.basename(grunt.dest);
-  console.log("Compiling theme "+themeName+" with options: "+JSON.stringify(options, null, 4));
+  console.log("Compiling theme "+themeName+" with options: "+JSON.stringify(grunt.themeConfig, null, 4));
   console.log("");
 
 
@@ -115,16 +112,20 @@ module.exports = function (grunt) {
     return files;
   };
 
-  //  basic information used by all the tasks
+  //  start with basic information used by all the tasks
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    options: options
+    watch: {
+      options: { spawn: false, livereload: true }
+    }
   });
 
+  // set up some data
   grunt.dirs = {
     'themeSource': _.first(grunt.sources),
     'coreSource': _.last(grunt.sources),
-    'bootstrap': grunt.locateFile('bootstrap/'+options.bootstrap)
+    'bootstrap': grunt.locateFile('bootstrap/'+grunt.themeConfig.bootstrap),
+    'dest': grunt.dest
   };
 
   //  read script config
@@ -167,6 +168,9 @@ module.exports = function (grunt) {
 
   require('./stylesheets.js')(grunt, _);
   require('./javascript.js')(grunt, _);
+  require('./templates.js')(grunt, _);
+  require('./colours.js')(grunt, _);
+  require('./tests.js')(grunt, _);
 
 
   // grunt.config.merge({
@@ -410,7 +414,7 @@ module.exports = function (grunt) {
   grunt.registerTask('default', [
     // 'clean',
     // 'jshint', 
-    // 'copy',
+    'copy',
     // 'concat', 
     'uglify', 
     'less',

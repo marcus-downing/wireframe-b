@@ -1,0 +1,23 @@
+{
+  "name": "theme-name",
+  "description": "Your theme",
+  "homepage": "http://localhost/",
+  "repository": { 
+    "type" : "git",
+    "url" : ""
+  },
+  "private": true,
+  "license": "none",
+  "version": "0.0.0",
+  "author": {
+    "name" : "",
+    "email" : "",
+    "url" : ""
+  },
+  "devDependencies": {
+    "grunt": "",
+    "wireframe-b": "file:../../wireframe-b/src"
+  },
+  "config": {
+  }
+}
