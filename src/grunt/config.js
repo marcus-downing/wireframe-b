@@ -19,15 +19,14 @@ module.exports = function (grunt) {
 
 
   //  read and merge options
-  grunt.themeConfig = _(grunt.sources).map(function (src) {
+  grunt.themeConfig = {};
+  _(grunt.sources).each(function (src) {
     var pkg = grunt.file.readJSON(src+'/package.json');
-    return pkg.config;
-  }).merge().value()[0];
-
-
+    _.defaults(grunt.themeConfig, pkg.config);
+  });
 
   var themeName = path.basename(grunt.dest);
-  console.log("Compiling theme "+themeName+" with options: "+JSON.stringify(grunt.themeConfig, null, 4));
+  console.log("Compiling theme "+themeName+" with config: "+JSON.stringify(grunt.themeConfig, null, 4));
   console.log("");
 
 
@@ -70,7 +69,7 @@ module.exports = function (grunt) {
     var sources = _(grunt.sources).map(function (src) {
       return src+'/'+path+'/'+set;
     }).filter(function (src) {
-      return fs.statSync(src).isDirectory();
+      return grunt.file.exists(src) && fs.statSync(src).isDirectory();
     });
     // console.log(" in sources: "+sources);
 
@@ -115,6 +114,7 @@ module.exports = function (grunt) {
   //  start with basic information used by all the tasks
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    env: process.env,
     watch: {
       options: { spawn: false, livereload: true }
     }
@@ -128,50 +128,34 @@ module.exports = function (grunt) {
     'dest': grunt.dest
   };
 
-  //  read script config
-  // var themename = "Wireframe b"
-
-
-
-  //  the theme's main metadata
-  // var themeconf = grunt.file.read("config/theme.conf");
-  // var stylebanner = "/*!\n"+themeconf+"\n*/\n\n";
-
-
-  // Process the colours
-  /*var colours = ini.parse(grunt.file.read("config/colours.ini"));
-  var colours_less = "";
-  for (name in colours) {
-    var value = colours[name];
-    colours_less = colours_less+"@colour_"+name+": #"+value+";\n";
-  }
-  grunt.file.write("tmp/less/colours.less", colours_less);*/
-
-
 
   //  common config bits
-  var concat_php_options = {
-    banner: '<?php\n',
-    process: processPHPfile
-  };
+  // var concat_php_options = {
+  //   banner: '<?php\n',
+  //   process: processPHPfile
+  // };
 
-  var concat_js_options = {
-    separator: ';\n\n',
-    sourceMap: true
-  };
+  // var concat_js_options = {
+  //   separator: ';\n\n',
+  //   sourceMap: true
+  // };
 
 
   // extra configuration
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
 
+  // console.log("loaded common tasks");
 
   require('./stylesheets.js')(grunt, _);
   require('./javascript.js')(grunt, _);
+  require('./images.js')(grunt, _);
   require('./templates.js')(grunt, _);
   require('./colours.js')(grunt, _);
   require('./tests.js')(grunt, _);
 
+  // console.log("loaded config tasks");
+  // console.log(JSON.stringify(grunt.config.imagemin));
 
   // grunt.config.merge({
   //   clean: {
@@ -418,7 +402,7 @@ module.exports = function (grunt) {
     // 'concat', 
     'uglify', 
     'less',
-    // 'imagemin',
+    'imagemin',
     // 'webfont',
     // 'markdown'
   ]);

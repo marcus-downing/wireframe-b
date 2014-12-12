@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-  var base = "../../wireframe-b/src";
+  var base = "./node_modules/wireframe-b";
   var path = require("path");
   grunt.sources = [
     path.resolve("."),

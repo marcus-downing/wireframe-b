@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "grunt": "",
-    "wireframe-b": "file:../../wireframe-b/src"
+    "wireframe-b": ""
   },
   "config": {
   }
