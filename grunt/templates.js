@@ -1,7 +1,7 @@
 //  Compile the WordPress templates
 module.exports = function (grunt, _) {
   var template_files = grunt.locateSetFiles("parts", "templates", "*.php");
-  console.log("Found templates: "+template_files);
+  if (grunt.debug) console.log("Found templates: "+template_files);
 
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.config.merge({

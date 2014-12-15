@@ -9,7 +9,7 @@ module.exports = function (grunt, _) {
   }).map(function (src) {
     return src+"/**/*.{png,jpg,gif}";
   }).value();
-  // console.log("image min sources: "+JSON.stringify(sources, null, 4));
+  // if (grunt.debug) console.log("image min sources: "+JSON.stringify(sources, null, 4));
 
   grunt.config.merge({
     imagemin: {

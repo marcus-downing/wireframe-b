@@ -6,8 +6,10 @@ module.exports = function (grunt, _) {
   var bootstrap_js = [grunt.dirs.bootstrap+"/dist/js/bootstrap.min.js"];
   var all_js = grunt.locateSetFiles("js", "all", "*.js", "all.js");
   var main_js = grunt.locateSetFiles("js", "main", "*.js", "main.js");
+  var admin_js = grunt.locateSetFiles("js", "admin", "*.js", "admin.js");
 
   main_js = _.union(bootstrap_js, all_js, main_js);
+  admin_js = _.union(bootstrap_js, all_js, admin_js);
 
   grunt.config.merge({
     jshint: {
@@ -26,7 +28,7 @@ module.exports = function (grunt, _) {
 
     watch: {
       javascripts: {
-        files: _.union(all_files, main_files, admin_files),
+        files: grunt.locateFiles('js'),
         tasks: ['jshint', 'uglify']
       }
     }

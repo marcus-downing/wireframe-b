@@ -1,9 +1,13 @@
 //  Compile LESS stylesheets
 module.exports = function (grunt, _) {
-  grunt.loadNpmTasks('grunt-contrib-less');
   var scheme = grunt.themeConfig.stylesheets;
   var extension = (scheme == 'less') ? '.less' : '.scss';
   var wildcard = '*'+extension;
+
+  if (scheme == 'less')
+    grunt.loadNpmTasks('grunt-contrib-less');
+  else if (scheme == 'sass')
+    grunt.loadNpmTasks('grunt-contrib-sass');
 
 
   //  build the theme's banner from the package contents
@@ -27,12 +31,14 @@ module.exports = function (grunt, _) {
     });
 
   //  locate files
-  var base_files = [grunt.dirs.bootstrap+"/less/bootstrap.less"];
+  var base_files = [grunt.dirs.bootstrap+'/'+scheme+'/bootstrap'+extension];
   var all_files = grunt.locateSetFiles(scheme, "all", wildcard, "all"+extension);
   var main_files = grunt.locateSetFiles(scheme, "main", wildcard, "main"+extension);
+  var admin_files = grunt.locateSetFiles(scheme, "admin", wildcard, "admin"+extension);
+  var editor_files = grunt.locateSetFiles(scheme, "editor", wildcard, "editor"+extension);
 
-  var conf_files = {};
-  conf_files[grunt.dest+"/style.css"] = _.union(base_files, all_files, main_files);
+  main_files = _.union(base_files, all_files, main_files);
+  admin_files = _.union(all_files, admin_files);
 
   //  options including includable paths
   var include_paths = [scheme+"/all", scheme+"/common"]
@@ -44,9 +50,12 @@ module.exports = function (grunt, _) {
   };
   var less_options = {
     paths: include_paths,
-    compress: true,
-    cleancss: true
+    // compress: true,
+    // cleancss: true
   };
+  if (grunt.themeConfig.production) {
+    
+  }
 
   //  the config
   if (scheme == 'less') {
@@ -54,8 +63,19 @@ module.exports = function (grunt, _) {
       less: {
         main: {
           options: less_main_options,
-          files: conf_files
+          src: main_files,
+          dest: grunt.dest+'/style.css'
         },
+        admin: {
+          options: less_options,
+          src: admin_files,
+          dest: grunt.dest+'/admin.css'
+        },
+        // editor: {
+        //   options: less_options,
+        //   src: editor_files,
+        //   dest: grunt.dest+'/editor.css'
+        // }
       },
 
       watch: {

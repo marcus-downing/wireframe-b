@@ -13,9 +13,8 @@ module.exports = function (grunt) {
   var fs = require('fs')
     , util = require('util')
     , ini = require('ini')
-    , path = require('path');
-
-  var _ = require('lodash-node');
+    , path = require('path')
+    , _ = require('lodash-node');
 
 
   //  read and merge options
@@ -24,10 +23,10 @@ module.exports = function (grunt) {
     var pkg = grunt.file.readJSON(src+'/package.json');
     _.defaults(grunt.themeConfig, pkg.config);
   });
+  grunt.debug = grunt.themeConfig.debug;
 
   var themeName = path.basename(grunt.dest);
-  console.log("Compiling theme "+themeName+" with config: "+JSON.stringify(grunt.themeConfig, null, 4));
-  console.log("");
+  if (grunt.debug) console.log("Compiling theme "+themeName+" with config: "+JSON.stringify(grunt.themeConfig, null, 4)+"\n");
 
 
 
@@ -50,7 +49,7 @@ module.exports = function (grunt) {
     var fileVersions = _(grunt.sources).map(function (src) {
       return src+'/'+filename;
     }).filter(function (path) {
-      console.log("Testing path: "+path);
+      if (grunt.debug) console.log("Testing path: "+path);
       return grunt.file.exists(path);
     }).value();
     return fileVersions;
@@ -63,6 +62,7 @@ module.exports = function (grunt) {
       return fs.statSync(src).isDirectory();
     }).value();
 
+    if (grunt.debug) {
     var sets = {};
     _(sources).each(function (src) {
       var dirsets = fs.readdirSync(src);
@@ -70,29 +70,30 @@ module.exports = function (grunt) {
         console.log("Found source set: "+dirset);
       });
     });
+    }
 
     // ...
   };
 
   grunt.locateSetFiles = function (path, set, pattern, key) {
-    // console.log("\nLocate set files: "+path+", "+set+", "+pattern+", "+key);
+    // if (grunt.debug) console.log("\nLocate set files: "+path+", "+set+", "+pattern+", "+key);
     var sources = _(grunt.sources).map(function (src) {
       return src+'/'+path+'/'+set;
     }).filter(function (src) {
       return grunt.file.exists(src) && fs.statSync(src).isDirectory();
     });
-    // console.log(" in sources: "+sources);
+    // if (grunt.debug) console.log(" in sources: "+sources);
 
     if (!!key) {
       var keyedSources = sources.map(function (src) {
         return src+'/'+key;
       }).filter(function (keyfile) {
-        // console.log("Checking keyed source: "+keyfile);
+        // if (grunt.debug) console.log("Checking keyed source: "+keyfile);
         return grunt.file.exists(keyfile);
       });
 
       if (!keyedSources.isEmpty()) {
-        // console.log("Found keyed sources: "+keyedSources);
+        // if (grunt.debug) console.log("Found keyed sources: "+keyedSources);
         return [ keyedSources.first() ];
       }
     }
@@ -117,7 +118,7 @@ module.exports = function (grunt) {
         return grunt.file.exists(filename);
       }).first();
     }).value();
-    // console.log("Found files: "+files);
+    // if (grunt.debug) console.log("Found files: "+files);
     return files;
   };
 
@@ -415,7 +416,7 @@ module.exports = function (grunt) {
     'less',
     'imagemin',
     // 'webfont',
-    'markdown'
+    // 'markdown'
   ]);
 
 
