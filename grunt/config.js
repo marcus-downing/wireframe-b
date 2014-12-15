@@ -36,7 +36,7 @@ module.exports = function (grunt) {
     var fileVersions = _(grunt.sources).map(function (src) {
       return src+'/'+filename;
     }).filter(function (path) {
-      return fs.existsSync(path);
+      return grunt.file.exists(path);
     });
 
     if (fileVersions.isEmpty()) {
@@ -45,6 +45,16 @@ module.exports = function (grunt) {
       return fileVersions.first();
     }
   };
+
+  grunt.locateFiles = function (filename) {
+    var fileVersions = _(grunt.sources).map(function (src) {
+      return src+'/'+filename;
+    }).filter(function (path) {
+      console.log("Testing path: "+path);
+      return grunt.file.exists(path);
+    }).value();
+    return fileVersions;
+  }
 
   grunt.locateSets = function (path) {
     var sources = _(grunt.sources).map(function (src) {
@@ -153,6 +163,7 @@ module.exports = function (grunt) {
   require('./templates.js')(grunt, _);
   require('./colours.js')(grunt, _);
   require('./tests.js')(grunt, _);
+  require('./docs.js')(grunt, _);
 
   // console.log("loaded config tasks");
   // console.log(JSON.stringify(grunt.config.imagemin));
@@ -404,7 +415,7 @@ module.exports = function (grunt) {
     'less',
     'imagemin',
     // 'webfont',
-    // 'markdown'
+    'markdown'
   ]);
 
 
