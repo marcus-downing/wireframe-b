@@ -49,32 +49,40 @@ Once the theme has been built, the `src` directory and parent theme are not need
 
 The build process uses Node.js, Grunt and a number of other tools. To ensure the requirements are met, run this on the command line:
 
-```bash
-$ cd themes/wireframe-b/src
-$ npm install
-```
-
 ### 1. Create a theme
 
-Start by copying the `theme-template` folder and putting it alongside the parent theme.
+Start by copying the `theme-template` folder. It should look something like this:
 
  - `themes/`
-   - `wireframe-bootstrap/`
+   - `my-child-theme/`
      - `src/`
-  - `my-child-theme/`
-    - `src/`
+       - `Gruntfile.js`
+       - `package.json`
+       - `config/`
+       - `js/`
+       - `less/`
+       - `parts/`
+
+There should be nothing outside the `src` directory to start with.
 
 ### 2. Set the theme's identity
 
-Edit the file `my-child-theme/src/config/theme.conf`, changing at least this one line:
+Edit the file `my-child-theme/src/package.json`, changing at least this one line:
 
 ```
-Theme Name: My theme
+{
+  "name": "theme-name",
+  "title": "Your theme",
+}
 ```
+
+These details and others in `package.json` will be used to produce the WordPress theme header.
+
+You should not need to change anything in `Gruntfile.js` right now, but have a look at it anyway.
 
 ### 3. Build the theme
 
-To install Grunt into your theme, first call:
+To install wireframe-b, Grunt, and other dependencies into your theme, first call:
 
 ```bash
 $ cd themes/my-child-theme/src
@@ -102,7 +110,7 @@ Copy or symlink the theme into your WordPress installations's `wp-content/themes
 
 The parent theme's `src` directory should contain folders for LESS stylesheets, Javascripts, templates, libraries, configuration, images, fonts etc. A child theme's `src` directory can contain any, all or none of these.
 
-*Warning:* Your `src` folder will also contain files called `Gruntfile.js` and `packages.json`. Do not delete these!
+*Warning:* Your `src` folder will contain files called `Gruntfile.js` and `packages.json`. Do not delete these!
 
 
 ## Documentation
