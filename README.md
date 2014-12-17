@@ -51,10 +51,9 @@ The build process uses Node.js, Grunt and a number of other tools. To ensure the
 
 ### 1. Create a theme
 
-Start by copying the `theme-template` folder. It should look something like this:
+Start by copying the `theme-template` folder, and renaming it to your desired name. It should look something like this:
 
- - `themes/`
-   - `my-child-theme/`
+  - `example-theme/`
      - `src/`
          - `Gruntfile.js`
          - `package.json`
@@ -67,16 +66,19 @@ There should be nothing outside the `src` directory to start with.
 
 ### 2. Set the theme's identity
 
-Edit the file `my-child-theme/src/package.json`, changing at least this one line:
+Edit the file `my-child-theme/src/package.json`, changing at least these few lines:
 
 ```
 {
-  "name": "theme-name",
-  "title": "Your theme",
+  "name": "example-theme",
+  "title": "My example theme",
+  "description": "Something about your theme"
 }
 ```
 
-These details and others in `package.json` will be used to produce the WordPress theme header.
+These details and others in `package.json` will be used to produce the WordPress theme metadata.
+The `name` has to be a slug-friendly name, which should match the folder name.
+The `title` is the name that will appear in WordPress admin.
 
 You should not need to change anything in `Gruntfile.js` right now, but have a look at it anyway.
 
@@ -85,7 +87,7 @@ You should not need to change anything in `Gruntfile.js` right now, but have a l
 To install wireframe-b, Grunt, and other dependencies into your theme, first call:
 
 ```bash
-$ cd themes/my-child-theme/src
+$ cd example-theme/src
 $ npm install
 ```
 
@@ -95,7 +97,8 @@ This puts a copy of Grunt into your theme's `src/node_modules` directory. Then s
 $ grunt
 ```
 
-This will compile your theme and put the resulting theme files *outside* the `src` folder. To have grunt watch the folder for changes and compile continuously as you work, use:
+This will compile your theme and put the resulting theme files *outside* the `src` folder. 
+To have grunt watch the folder for changes and compile continuously as you work, use:
 
 ```bash
 $ grunt watch
@@ -103,7 +106,8 @@ $ grunt watch
 
 ### 4. Deploy
 
-Copy or symlink the theme into your WordPress installations's `wp-content/themes` directory. You do not need to copy the `src` directory, nor do you need the parent theme.
+Copy or symlink the theme into your WordPress installations's `wp-content/themes` directory. 
+You can leave out the entire `src` directory from your copy, and you don't need to have a copy of _Wireframe b_ present for it to work -- the compiled theme is completely self-contained.
 
 
 ## Making your theme
