@@ -112,10 +112,38 @@ You can leave out the entire `src` directory from your copy, and you don't need 
 
 ## Making your theme
 
-The parent theme's `src` directory should contain folders for LESS stylesheets, Javascripts, templates, libraries, configuration, images, fonts etc. A child theme's `src` directory can contain any, all or none of these.
+Your theme's `src` directory can contain any of the following:
+
+ - `js` for JavaScripts and JavaScript libraries
+ - `less` for Stylesheets (in LESS format)
+ - `lib` for PHP libraries
+ - `fonts` for webfonts
+ - `icons` for SVG icons that will become a webfont
+ - `images` for images
+ - `parts` for PHP templates:
+ - `i18n` for translations
+ - `docs` for documentation (in Markdown format)
 
 *Warning:* Your `src` folder will contain files called `Gruntfile.js` and `packages.json`. Do not delete these!
 
+### Sets
+
+Several of these folders (including `js`, `less` and `lib`) are divided into sets that are automatically included in the appropriate place.
+
+### Templates
+
+Your theme's `src/parts` directory should contain:
+
+ - `parts/templates` for full page templates
+ - `parts/layouts` for page layout templates
+ - `parts/main` for main content area templates
+ - `parts/headers` for header templates
+ - `parts/footers` for footer templates
+ - `parts/sidebars` for sidebar templates
+ - `parts/articles` for items to appear in search results
+ - `parts/fragments` for other re-usable parts
+
+These parts are combined to produce the templates used by WordPress.
 
 ## Documentation
 
