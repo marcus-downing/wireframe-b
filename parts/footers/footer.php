@@ -1,1 +1,1 @@
-<% %>
+<%= fixed_footer %>

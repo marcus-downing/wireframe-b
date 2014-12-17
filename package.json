@@ -1,6 +1,6 @@
 {
   "name": "wireframe-b",
-  "description": "Wireframe b theme toolkit",
+  "description": "Wireframe b, a WordPress theme toolkit",
   "version": "0.0.0",
   "homepage": "https://github.com/marcusatbang/wireframe-b",
   "repository": { 
@@ -35,7 +35,8 @@
   },
   "config": {
     "debug": false,
-    "bootstrap": "bootstrap-3.3.1",
+    "min": false,
+    "base": "bootstrap-3.3.1",
     "stylesheets": "less"
   }
 }

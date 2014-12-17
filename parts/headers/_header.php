@@ -12,8 +12,6 @@
     }
   ?>
 
-  <title>Wireframe b</title>
-
   <?php do_action('wireframe-b\header\before-css'); ?>
   <link rel="stylesheet" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
   <link rel="stylesheet" media="print" href="<?php echo get_stylesheet_directory_uri(); ?>/print.css" title="Print"/>

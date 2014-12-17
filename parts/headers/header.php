@@ -1,2 +1,2 @@
-<%
- %>
+<%= fixed_header %>
+foo!

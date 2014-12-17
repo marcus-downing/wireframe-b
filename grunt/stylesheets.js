@@ -17,21 +17,21 @@ module.exports = function (grunt, _) {
   }).merge().value()[0];
 
   var themebanner = grunt.template.process("/*!\n"+
-    "Theme name: <%= pkg.name %>\n"+
+    "Theme Name: <%= pkg.title %>\n"+
     "Theme URI: <%= pkg.homepage %>\n"+
     "Description: <%= pkg.description %>\n"+
-    "Author: <%= pkg.author.name %>\n+"+
+    "Author: <%= pkg.author.name %>\n"+
     "Author URI: <%= pkg.author.url %>\n"+
     "Version: <%= pkg.version %>\n"+
-    "Tags: <%= false %>\n"+
+    "Tags: wireframe-b <%= false %>\n"+
     "License: <%= pkg.license %>\n"+
     "License URI: <%= false %>\n"+
-    "\n*/\n", {
+    "*/\n", {
       pkg: pkg
     });
 
   //  locate files
-  var base_files = [grunt.dirs.bootstrap+'/'+scheme+'/bootstrap'+extension];
+  var base_files = [grunt.dirs.base+'/'+scheme+'/bootstrap'+extension];
   var all_files = grunt.locateSetFiles(scheme, "all", wildcard, "all"+extension);
   var main_files = grunt.locateSetFiles(scheme, "main", wildcard, "main"+extension);
   var admin_files = grunt.locateSetFiles(scheme, "admin", wildcard, "admin"+extension);
@@ -45,16 +45,15 @@ module.exports = function (grunt, _) {
   var less_main_options = {
     paths: include_paths,
     banner: themebanner,
-    // cleancss: true,
-    // compress: true,
+    sourceMap: true,
+    sourceMapFilename: grunt.dest+'/style.css.map'
   };
   var less_options = {
     paths: include_paths,
-    // compress: true,
-    // cleancss: true
   };
-  if (grunt.themeConfig.production) {
-    
+  if (grunt.themeConfig.min) {
+    less_options.compress = true;
+    less_main_options.compress = true;
   }
 
   //  the config

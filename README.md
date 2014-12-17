@@ -2,7 +2,7 @@
 
 A WordPress theme toolkit using Twitter Bootstrap and Grunt.
 
-This theme builder is intended for developers of complex themes, providing a balance between fast web pages, responsive design and a smooth development process. Rather than interactive design tools, its focus is on generating high-performance code using a compile step. To run it you'll need to be using Linux, Mac OS, Unix or similar, and familiar with running tasks on the command line. It requires Wordpress 4.0, PHP 5.4 and Node.js.
+This theme builder is intended for developers of complex themes, providing a balance between fast web pages, responsive design and a smooth development process. Rather than interactive design tools, its focus is on generating high-performance code using a compile step. To run it you'll need to be using Linux, Mac OS, Unix or similar, and familiar with running tasks on the command line.
 
 **WARNING: Project in early development, not even vaguely ready to use!**
 
@@ -42,6 +42,10 @@ Once the theme has been built, the `src` directory and parent theme are not need
 ## Getting started
 
 ### Requirements
+
+ - WordPress 4.1
+ - PHP 5.4
+ - Node.js
 
 The build process uses Node.js, Grunt and a number of other tools. To ensure the requirements are met, run this on the command line:
 

@@ -1,13 +1,13 @@
-var processPHPfile = function(src, filepath) {
-  src = src.replace(/^\<\?php/, '');
-  src = src.replace(/\/\*[^]*?\*\//g, '');
+// var processPHPfile = function(src, filepath) {
+//   src = src.replace(/^\<\?php/, '');
+//   src = src.replace(/\/\*[^]*?\*\//g, '');
 
-  //  squish newlines a bit (but not too much)
-  src = src.replace(/\n[\n\s]*\n/g, '\n\n');
-  src = src.replace(/^[\n\s]*/, '');
-  src = src.replace(/[\n\s]*$/, '\n');
-  return src;
-};
+//   //  squish newlines a bit (but not too much)
+//   src = src.replace(/\n[\n\s]*\n/g, '\n\n');
+//   src = src.replace(/^[\n\s]*/, '');
+//   src = src.replace(/[\n\s]*$/, '\n');
+//   return src;
+// };
 
 module.exports = function (grunt) {
   var fs = require('fs')
@@ -24,13 +24,19 @@ module.exports = function (grunt) {
     _.defaults(grunt.themeConfig, pkg.config);
   });
   grunt.debug = grunt.themeConfig.debug;
-
-  var themeName = path.basename(grunt.dest);
-  if (grunt.debug) console.log("Compiling theme "+themeName+" with config: "+JSON.stringify(grunt.themeConfig, null, 4)+"\n");
+  if (grunt.debug) console.log("Debug flag ON!\n");
 
 
 
-  //  funcitons to find files across multiple source folders
+  //  functions to find files across multiple source folders
+
+  grunt.isValidFile = function (file) {
+    var paths = file.split('/');
+    var fn = _.last(paths);
+    return fn[0] != '_' && fn[0] != '.';
+  };
+
+
   grunt.locateFile = function (filename) {
     var fileVersions = _(grunt.sources).map(function (src) {
       return src+'/'+filename;
@@ -46,10 +52,11 @@ module.exports = function (grunt) {
   };
 
   grunt.locateFiles = function (filename) {
+    // if (grunt.debug) console.log("Locating files: "+filename);
     var fileVersions = _(grunt.sources).map(function (src) {
       return src+'/'+filename;
     }).filter(function (path) {
-      if (grunt.debug) console.log("Testing path: "+path);
+      // if (grunt.debug) console.log("Testing path: "+path+" -> "+grunt.file.exists(path));
       return grunt.file.exists(path);
     }).value();
     return fileVersions;
@@ -103,18 +110,23 @@ module.exports = function (grunt) {
       files = _(files).filter(function (name) {
         var filename = src+'/'+name;
         return fs.statSync(filename).isFile();
-      });
+      }).value();
+      // if (grunt.debug) console.log("Found files named: "+files);
       return files;
     }).flatten().filter(function (str) {
+      // if (grunt.debug) console.log("Checking name: "+str);
       return str != "";
     }).uniq();
     if (names.isEmpty())
       return [];
+    // if (grunt.debug) console.log("Found files named: "+names);
 
     var files = names.map(function (name) {
+      // if (grunt.debug) console.log("Looking for files named: "+name);
       return _(sources).map(function (src) {
         return src+'/'+name;
       }).filter(function (filename) {
+        // if (grunt.debug) console.log("Checking file: "+filename);
         return grunt.file.exists(filename);
       }).first();
     }).value();
@@ -123,21 +135,26 @@ module.exports = function (grunt) {
   };
 
   //  start with basic information used by all the tasks
+  var pkg = grunt.file.readJSON('package.json');
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: pkg,
     env: process.env,
     watch: {
       options: { spawn: false, livereload: true }
     }
   });
 
+  var themeName = pkg.name; // path.basename(grunt.dest);
+  if (grunt.debug) console.log("Compiling theme '"+themeName+"' with config: "+JSON.stringify(grunt.themeConfig, null, 4)+"\n");
+
   // set up some data
   grunt.dirs = {
     'themeSource': _.first(grunt.sources),
     'coreSource': _.last(grunt.sources),
-    'bootstrap': grunt.locateFile('bootstrap/'+grunt.themeConfig.bootstrap),
+    'base': grunt.locateFile('bootstrap/'+grunt.themeConfig.base),
     'dest': grunt.dest
   };
+  if (grunt.debug) console.log('Directories: '+JSON.stringify(grunt.dirs, null, 4));
 
 
   //  common config bits
@@ -158,6 +175,7 @@ module.exports = function (grunt) {
 
   // console.log("loaded common tasks");
 
+  require('./functions.js')(grunt, _);
   require('./stylesheets.js')(grunt, _);
   require('./javascript.js')(grunt, _);
   require('./images.js')(grunt, _);
@@ -165,6 +183,7 @@ module.exports = function (grunt) {
   require('./colours.js')(grunt, _);
   require('./tests.js')(grunt, _);
   require('./docs.js')(grunt, _);
+  if (grunt.debug) console.log("\n\n");
 
   // console.log("loaded config tasks");
   // console.log(JSON.stringify(grunt.config.imagemin));
@@ -411,7 +430,7 @@ module.exports = function (grunt) {
     // 'clean',
     // 'jshint', 
     'copy',
-    // 'concat', 
+    'concat', 
     'uglify', 
     'less',
     'imagemin',

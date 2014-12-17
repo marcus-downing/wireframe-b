@@ -1,7 +1,8 @@
 {
   "name": "theme-name",
-  "description": "Your theme",
-  "homepage": "http://localhost/",
+  "title": "Your theme",
+  "description": "Description of your theme",
+  "homepage": "http://example.com/",
   "repository": { 
     "type" : "git",
     "url" : ""
