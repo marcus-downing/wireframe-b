@@ -56,12 +56,12 @@ Start by copying the `theme-template` folder. It should look something like this
  - `themes/`
    - `my-child-theme/`
      - `src/`
-       - `Gruntfile.js`
-       - `package.json`
-       - `config/`
-       - `js/`
-       - `less/`
-       - `parts/`
+         - `Gruntfile.js`
+         - `package.json`
+         - `config/`
+         - `js/`
+         - `less/`
+         - `parts/`
 
 There should be nothing outside the `src` directory to start with.
 
