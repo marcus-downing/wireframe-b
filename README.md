@@ -1,6 +1,6 @@
 # Wireframe b
 
-A WordPress theme toolkit using Twitter Bootstrap and Grunt.
+A [WordPress](https://wordpress.org/) theme toolkit using [Bootstrap](http://getbootstrap.com/) and [Grunt](http://gruntjs.com/).
 
 This theme builder is intended for developers of complex themes, providing a balance between fast web pages, responsive design and a smooth development process. Rather than interactive design tools, its focus is on generating high-performance code using a compile step. To run it you'll need to be using Linux, Mac OS, Unix or similar, and familiar with running tasks on the command line.
 
@@ -20,7 +20,7 @@ It does this with a build step (automated with Grunt) that compiles stylesheets,
 
  - Images to resize and compress
  - Javascript files to minify and combine
- - LESS and/or SASS stylesheets to compile to CSS
+ - LESS stylesheets to compile to CSS
  - Fonts to bundle with the CSS, or links to externally hosted fonts
  - PHP library files to load on all pages, in admin, or on specific pages
  - Templates, layout files and partials, in either PHP or a template language
@@ -130,20 +130,28 @@ Your theme's `src` directory can contain any of the following:
 
 Several of these folders (including `js`, `less` and `lib`) are divided into sets that are automatically included in the appropriate place.
 
-### Templates
+### Building templates
 
 Your theme's `src/parts` directory should contain:
 
- - `parts/templates` for full page templates
- - `parts/layouts` for page layout templates
- - `parts/main` for main content area templates
- - `parts/headers` for header templates
- - `parts/footers` for footer templates
- - `parts/sidebars` for sidebar templates
- - `parts/articles` for items to appear in search results
- - `parts/fragments` for other re-usable parts
+ - `templates` for full page templates
+ - `layouts` for page layout templates
+ - `main` for main content area templates
+ - `headers` for header templates
+ - `footers` for footer templates
+ - `sidebars` for sidebar templates
+ - `articles` for items to appear in search results
+ - `fragments` for other re-usable parts
 
 These parts are combined to produce the templates used by WordPress.
+The files in `templates` correspond to the files in [the WordPress template hierarchy](http://codex.wordpress.org/Template_Hierarchy).
+Grunt compiles the parts of a template - its layout, main, fragments etc - into a single PHP file for the template. This doesn't include the header, footer and 
+
+Layouts determine the shape of the page: columns, sidebars, etc. These should use the Bootstrap responsive grid.
+
+
+
+
 
 ## Documentation
 
