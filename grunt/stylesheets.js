@@ -37,7 +37,28 @@ module.exports = function (grunt, _) {
   var admin_files = grunt.locateSetFiles(scheme, "admin", wildcard, "admin"+extension);
   var editor_files = grunt.locateSetFiles(scheme, "editor", wildcard, "editor"+extension);
 
-  main_files = _.union(base_files, all_files, main_files);
+  var responsive_file = grunt.locateFile(scheme+'/common/_responsive'+extension);
+  var tmp_responsive_file = grunt.dirs.tmp+'/less/_responsive.less';
+
+  var responsive_code = grunt.file.read(responsive_file);
+  responsive_code = grunt.template.process(responsive_code, { data: {
+    import_stylesheet_set: function (set) {
+      var set_files = grunt.locateSetFiles(scheme, set, wildcard, set+extension);
+      return _.map(set_files, function (file) {
+        return grunt.file.read(file);
+        // return "@import \""+file+"\";";
+      });
+    },
+    import_base_variables: function () {
+      var variables = grunt.dirs.base+'/'+scheme+'/variables'+extension
+      return grunt.file.read(variables);
+      // var variables = '../../node_modules/wireframe-b/bootstrap/'+grunt.themeConfig.base+'/'+scheme+'/variables'+extension;
+      // return "@import (reference) \""+variables+"\";";
+    }
+  }});
+  grunt.file.write(tmp_responsive_file, responsive_code);
+
+  main_files = _.union(base_files, all_files, main_files, [ tmp_responsive_file ]);
   admin_files = _.union(all_files, admin_files);
 
   //  options including includable paths
