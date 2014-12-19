@@ -1,11 +1,8 @@
 module.exports = function (grunt, _) {
   grunt.loadNpmTasks('grunt-markdown');
 
-  var source_dirs = grunt.locateFiles("docs");
-  sources = _(source_dirs).map(function (src) {
-    return src+'/*.md';
-  }).value();
-  if (grunt.debug) console.log("Docs folders: "+JSON.stringify(sources, null, 4));
+  var md_files = grunt.locateFiles("docs", "*.md");
+  if (grunt.debug) console.log("Docs: "+JSON.stringify(md_files, null, 4));
 
   var template_file = grunt.locateFile("etc/template.html");
   if (grunt.debug) console.log("Docs template: "+template_file);
@@ -14,7 +11,7 @@ module.exports = function (grunt, _) {
     markdown: {
       docs: {
         expand: false,
-        src: sources,
+        src: md_files,
         dest: grunt.dest+'docs',
         ext: '.html',
         options: {
