@@ -12,14 +12,17 @@ module.exports = function (grunt, _) {
   // if (grunt.debug) console.log("image min sources: "+JSON.stringify(sources, null, 4));
 
   grunt.config.merge({
-    imagemin: {
-      dynamic: {
-        files: [{
-          // expand: true,
-          src: sources,
-          dest: grunt.dest
-        }]
+    image_resize: {
+      retina: {
+        
       }
+    },
+
+    imagemin: {
+      actual: {
+        src: sources,
+        dest: grunt.dest
+      },
     }
   });
 };
