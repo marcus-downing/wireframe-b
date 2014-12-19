@@ -16,6 +16,17 @@ module.exports = function (grunt, _) {
       all: grunt.locateFiles('js')
     },
 
+    concat: {
+      options: {
+        separator: ';\n\n',
+        sourceMap: true
+      },
+      main: {
+        src: main_js,
+        dest: grunt.dest+'/js/main.js'
+      }
+    },
+
     uglify: {
       options: {
         sourceMap: true

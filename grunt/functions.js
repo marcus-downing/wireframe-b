@@ -24,11 +24,6 @@ module.exports = function (grunt, _) {
     process: processPHPfile
   };
 
-  var concat_js_options = {
-    separator: ';\n\n',
-    sourceMap: true
-  };
-
   grunt.config.merge({
     concat: {
       functions_php: {
