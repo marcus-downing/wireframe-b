@@ -1,2 +1,6 @@
 <%= fixed_header %>
-foo!
+<?php
+body_preload('foo');
+?>
+
+(header)

@@ -20,8 +20,11 @@ module.exports = function (grunt) {
   //  read and merge options
   grunt.themeConfig = {};
   _(grunt.sources).each(function (src) {
-    var pkg = grunt.file.readJSON(src+'/package.json');
-    _.defaults(grunt.themeConfig, pkg.config);
+    var pkg_file = src+'/package.json';
+    if (grunt.file.exists(pkg_file)) {
+      var pkg = grunt.file.readJSON(pkg_file);
+      _.defaults(grunt.themeConfig, pkg.config);
+    }
   });
   grunt.debug = grunt.themeConfig.debug;
   if (grunt.debug) console.log("Debug flag ON!\n");
@@ -47,7 +50,11 @@ module.exports = function (grunt) {
       var paths = file.split('/');
       var fn = _.last(paths);
 
-      var re = new RegExp('^'+pattern.replace('.', '\\.').replace('*', '.*')+'$');
+      var rex = pattern.replace(/\./g, '\\.').replace(/\*/g, '.*');
+      rex = rex.replace(/\{(.*?)\}/g, '\($1\)').replace(/,/g, '|');
+      rex = '^'+rex+'$';
+      // if (grunt.debug) console.log("Wildcare regex: "+rex);
+      var re = new RegExp(rex);
       return fn.match(re);
     };
   };
@@ -202,10 +209,14 @@ module.exports = function (grunt) {
   if (grunt.debug) console.log("Compiling theme '"+themeName+"' with config: "+JSON.stringify(grunt.themeConfig, null, 4)+"\n");
 
   // set up some data
+  var themeSrc = _.first(grunt.sources);
+  var tmp = themeSrc+'/tmp';
+  grunt.sources.unshift(tmp);
+
   grunt.dirs = {
-    'themeSource': _.first(grunt.sources),
+    'themeSource': themeSrc,
     'coreSource': _.last(grunt.sources),
-    'tmp': _.first(grunt.sources)+'/tmp',
+    'tmp': tmp,
     'base': grunt.locateFile('bootstrap/'+grunt.themeConfig.base),
     'dest': grunt.dest
   };
@@ -221,7 +232,7 @@ module.exports = function (grunt) {
   require('./javascript.js')(grunt, _);
   require('./images.js')(grunt, _);
   require('./icons.js')(grunt, _);
-  require('./templates.js')(grunt, _);
+  require('./views.js')(grunt, _);
   require('./colours.js')(grunt, _);
   require('./tests.js')(grunt, _);
   require('./docs.js')(grunt, _);
@@ -237,6 +248,7 @@ module.exports = function (grunt) {
     'uglify', 
     'less',
     // 'image_resize',
+    // 'responsive_images',
     'imagemin',
     // 'markdown'
   ]);

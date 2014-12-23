@@ -1,13 +1,15 @@
 //  Compile the WordPress templates
 module.exports = function (grunt, _) {
-  var template_files = grunt.locateSetFiles("parts", "templates", "*.php");
-  var header_files = grunt.locateSetFiles("parts", "headers", "header*.php");
-  var footer_files = grunt.locateSetFiles("parts", "footers", "footer*.php");
+  var template_files = grunt.locateSetFiles("views", "templates", "*.php");
+  var header_files = grunt.locateSetFiles("views", "headers", "header*.php");
+  var footer_files = grunt.locateSetFiles("views", "footers", "footer*.php");
+  var sidebar_files = grunt.locateSetFiles("views", "sidebars", "sidebar*.php");
   header_files = _.filter(header_files, grunt.isValidFile);
   footer_files = _.filter(footer_files, grunt.isValidFile);
+  sidebar_files = _.filter(sidebar_files, grunt.isValidFile);
 
-  var fixed_header = grunt.file.read(grunt.locateFile("parts/headers/_header.php"));
-  var fixed_footer = grunt.file.read(grunt.locateFile("parts/footers/_footer.php"));
+  var fixed_header = grunt.file.read(grunt.locateFile("views/headers/_header.php"));
+  var fixed_footer = grunt.file.read(grunt.locateFile("views/footers/_footer.php"));
 
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.config.merge({
@@ -26,7 +28,7 @@ module.exports = function (grunt, _) {
               });
 
               if (grunt.debug) console.log('Looking for layout file: '+templateArgs.layout);
-              var layout_content = grunt.file.read(grunt.locateFile('parts/layouts/layout-'+templateArgs.layout+'.php'));
+              var layout_content = grunt.file.read(grunt.locateFile('views/layouts/layout-'+templateArgs.layout+'.php'));
 
               var template_process = function (content) {
                 return grunt.template.process(content, { data: {
@@ -35,7 +37,7 @@ module.exports = function (grunt, _) {
                     _.defaults(mainArgs, templateArgs);
 
                     if (grunt.debug) console.log('Looking for main file: '+mainArgs.main);
-                    var main_content = grunt.file.read(grunt.locateFile('parts/main/main-'+mainArgs.main+'.php'));
+                    var main_content = grunt.file.read(grunt.locateFile('views/main/main-'+mainArgs.main+'.php'));
                     return template_process(main_content);
                   },
 
@@ -43,7 +45,7 @@ module.exports = function (grunt, _) {
                     if (!_.isObject(partArgs)) partArgs = {};
                     _.defaults(partArgs, templateArgs);
                     if (grunt.debug) console.log('Looking for part: '+part);
-                    var part_content = grunt.file.read(grunt.locateFile('parts/'+part+'.php'));
+                    var part_content = grunt.file.read(grunt.locateFile('views/'+part+'.php'));
                     return template_process(part_content);
                   }
                 }});
@@ -54,6 +56,7 @@ module.exports = function (grunt, _) {
           }});
         }
       },
+
       template_php: {
         files: [
           {
@@ -65,6 +68,7 @@ module.exports = function (grunt, _) {
           }
         ]
       },
+
       header_php: {
         files: [
           {
@@ -76,6 +80,7 @@ module.exports = function (grunt, _) {
           }
         ]
       },
+
       footer_php: {
         files: [
           {
@@ -86,7 +91,20 @@ module.exports = function (grunt, _) {
             // filter: 'isFile'
           }
         ]
+      },
+
+      sidebar_php: {
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: sidebar_files,
+            dest: grunt.dest,
+            // filter: 'isFile'
+          }
+        ]
       }
+
     }
   });
 }

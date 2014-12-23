@@ -1,7 +1,8 @@
 <?php
 
-namespace wireframe_b;
-
+/*
+Various hooks to make sure SSL links are always written with SSL, whether that's in menus, furniture or content.
+*/
 
 function correct_https($text) {
   $http_url  = memoise('http_url',  function () {  return str_replace('https:', 'http:', site_url('/'));  });
@@ -15,13 +16,13 @@ function correct_https($text) {
   return $text;
 }
 
-add_filter('the_content', __NAMESPACE__'\correct_https', 1);
+add_filter('the_content', __NAMESPACE__.'\correct_https', 1);
 
-add_filter('script_loader_src', __NAMESPACE__'\correct_https');
-add_filter('style_loader_src', __NAMESPACE__'\correct_https');
+add_filter('script_loader_src', __NAMESPACE__.'\correct_https');
+add_filter('style_loader_src', __NAMESPACE__.'\correct_https');
 
-add_filter('wp_get_nav_menu_items', 'wireframe_nav_menu_items_ssl', 10, 3);
-function wireframe_nav_menu_items_ssl($items, $menu, $args) {
+add_filter('wp_get_nav_menu_items', __NAMESPACE__.'\nav_menu_items_ssl', 10, 3);
+function nav_menu_items_ssl($items, $menu, $args) {
   $newitems = array();
   foreach ($items as $item) {
     if (is_object($item) && is_string($item->url)) {
@@ -32,7 +33,7 @@ function wireframe_nav_menu_items_ssl($items, $menu, $args) {
   return $newitems;
 }
 
-add_filter('post_thumbnail_html', __NAMESPACE__'\correct_https');
+add_filter('post_thumbnail_html', __NAMESPACE__.'\correct_https');
 
-add_filter('widget_title', __NAMESPACE__'\correct_https');
-add_filter('widget_text', __NAMESPACE__'\correct_https');
+add_filter('widget_title', __NAMESPACE__.'\correct_https');
+add_filter('widget_text', __NAMESPACE__.'\correct_https');

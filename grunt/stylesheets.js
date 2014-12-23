@@ -11,9 +11,14 @@ module.exports = function (grunt, _) {
 
 
   //  build the theme's banner from the package contents
-  var pkg = _(grunt.sources).map(function (src) {
-    var pkg = grunt.file.readJSON(src+'/package.json');
-    return pkg.config;
+
+  var pkg = {};
+  _(grunt.sources).each(function (src) {
+    var pkg_file = src+'/package.json';
+    if (grunt.file.exists(pkg_file)) {
+      var src_pkg = grunt.file.readJSON(pkg_file);
+      _.defaults(pkg, src_pkg);
+    }
   }).merge().value()[0];
 
   var themebanner = grunt.template.process("/*!\n"+
@@ -91,11 +96,6 @@ module.exports = function (grunt, _) {
           src: admin_files,
           dest: grunt.dest+'/admin.css'
         },
-        // editor: {
-        //   options: less_options,
-        //   src: editor_files,
-        //   dest: grunt.dest+'/editor.css'
-        // }
       },
 
       watch: {
@@ -105,6 +105,8 @@ module.exports = function (grunt, _) {
         }
       }
     });
+
+    var sets = grunt.locateSets();
   } else if (scheme == 'sass') {
     // .. todo SASS
   } else {

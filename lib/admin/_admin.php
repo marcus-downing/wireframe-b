@@ -1,6 +1,6 @@
 <?php
 
-namespace wireframe_b;
+namespace wireframe_b\admin;
 
 add_action('admin_init', __NAMESPACE__.'\admin_init');
 // add_action('admin_print_styles', __NAMESPACE__.'\admin_print_styles');

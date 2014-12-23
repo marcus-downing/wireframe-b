@@ -9,7 +9,13 @@ module.exports = function (grunt, _) {
     //  squish newlines a bit (but not too much)
     src = src.replace(/\n[\n\s]*\n/g, '\n\n');
     src = src.replace(/^[\n\s]*/, '');
-    src = src.replace(/[\n\s]*$/, '\n');
+    src = src.replace(/[\n\s]*$/, '');
+
+    if (src == "")
+      return "";
+
+    path = filepath.substr(grunt.dirs.themeSource.length+1);
+    src = '//  '+path+'\n'+src;
     return src;
   };
 

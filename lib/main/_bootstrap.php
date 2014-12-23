@@ -1,7 +1,5 @@
 <?php
 
-namespace bootstrap;
-
 /*
  Functions to pull in parts of the Bootstrap layout
 */
@@ -31,7 +29,7 @@ function glyphicon($icon) {
 */
 function button($text, $args = array()) {
   $args = wp_parse_args((array) $args, array(
-    'btn-type' => 'button'
+    'btn-type' => 'button',
     'btn-class' => 'btn-default',
     'btn-size' => false,
     'href' => false,
