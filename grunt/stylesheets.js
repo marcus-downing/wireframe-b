@@ -1,5 +1,7 @@
 //  Compile LESS stylesheets
 module.exports = function (grunt, _) {
+  var path = require('path');
+
   var scheme = grunt.themeConfig.stylesheets;
   var extension = (scheme == 'less') ? '.less' : '.scss';
   var wildcard = '*'+extension;
@@ -35,36 +37,60 @@ module.exports = function (grunt, _) {
       pkg: pkg
     });
 
+
+  function createImportScript(sources, rel) {
+    if (!_.isNull(rel)) {
+      sources =  _.map(sources, function (source) {
+        if (grunt.file.isPathAbsolute(source)) {
+          return path.relative(rel, source);
+        }
+        return source;
+      });
+    }
+    return _.map(sources, function (source) {
+      return "@import \""+source+"\";";
+    }).join("\n");
+  }
+
+  function writeImportFile(sources, dest) {
+    var script = createImportScript(sources, path.dirname(dest));
+    grunt.file.write(dest, script);
+  }
+
+
   //  locate files
   var base_files = [grunt.dirs.base+'/'+scheme+'/bootstrap'+extension];
   var all_files = grunt.locateSetFiles(scheme, "all", wildcard, "all"+extension);
+  var main_core_files = grunt.locateSetFiles(scheme, "main", '_'+wildcard);
   var main_files = grunt.locateSetFiles(scheme, "main", wildcard, "main"+extension);
   var admin_files = grunt.locateSetFiles(scheme, "admin", wildcard, "admin"+extension);
   var editor_files = grunt.locateSetFiles(scheme, "editor", wildcard, "editor"+extension);
 
   var responsive_file = grunt.locateFile(scheme+'/common/_responsive'+extension);
   var tmp_responsive_file = grunt.dirs.tmp+'/less/_responsive.less';
+  var tmp_main_file = grunt.dirs.tmp+'/less/_main.less';
 
   var responsive_code = grunt.file.read(responsive_file);
   responsive_code = grunt.template.process(responsive_code, { data: {
     import_stylesheet_set: function (set) {
       var set_files = grunt.locateSetFiles(scheme, set, wildcard, set+extension);
-      return _.map(set_files, function (file) {
-        return grunt.file.read(file);
-        // return "@import \""+file+"\";";
-      });
+      return createImportScript(set_files, path.dirname(tmp_responsive_file));
     },
     import_base_variables: function () {
-      var variables = grunt.dirs.base+'/'+scheme+'/variables'+extension
-      return grunt.file.read(variables);
-      // var variables = '../../node_modules/wireframe-b/bootstrap/'+grunt.themeConfig.base+'/'+scheme+'/variables'+extension;
-      // return "@import (reference) \""+variables+"\";";
+      return '';
+      // var variables = grunt.dirs.base+'/'+scheme+'/variables'+extension;
+      // var var_files = _.merge([ variables ], all_files);
+      // return createImportScript(all_files, path.dirname(tmp_responsive_file));
     }
   }});
   grunt.file.write(tmp_responsive_file, responsive_code);
 
-  main_files = _.union(base_files, all_files, main_files, [ tmp_responsive_file ]);
+  main_files =  _.union(base_files, all_files, main_core_files, main_files, [ tmp_responsive_file ]);
   admin_files = _.union(all_files, admin_files);
+  if (grunt.debug) console.log("Main LESS: "+JSON.stringify(main_files, null, 4));
+  if (grunt.debug) console.log("Admin LESS: "+JSON.stringify(admin_files, null, 4));
+  writeImportFile(main_files, tmp_main_file);
+
 
   //  options including includable paths
   var include_paths = [scheme+"/all", scheme+"/common"]
@@ -88,7 +114,7 @@ module.exports = function (grunt, _) {
       less: {
         main: {
           options: less_main_options,
-          src: main_files,
+          src: tmp_main_file,
           dest: grunt.dest+'/style.css'
         },
         admin: {

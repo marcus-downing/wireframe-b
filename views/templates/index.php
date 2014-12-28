@@ -9,6 +9,6 @@ This template is used as the ultimate fallback for rendering any URL not covered
 ?><%=
 template({
   'layout': 'simple',
-  'main': 'simple'
+  'content': 'simple'
 })
 %>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <?php
     do_action('wireframe-b\header\meta');
-    $viewport = apply_filters('wireframe-b\header\meta-viewport', '');
+    $viewport = apply_filters('wireframe-b\header\meta-viewport', 'width=device-width, initial-scale=1');
     if (!empty($viewport)) {
       echo "\n<meta name='viewport' content='$viewport'>";
     }
@@ -14,7 +14,6 @@
 
   <?php do_action('wireframe-b\header\before-css'); ?>
   <link rel="stylesheet" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
-  <link rel="stylesheet" media="print" href="<?php echo get_stylesheet_directory_uri(); ?>/print.css" title="Print"/>
   <?php 
 
   //  Internet Explorer stylesheets
@@ -38,3 +37,7 @@
   ?>
 </head>
 <body <?php body_id(); body_class(); body_data(); ?>>
+<header id='header'>
+<%= inner_header() %>
+</header>
+<section class='body'>

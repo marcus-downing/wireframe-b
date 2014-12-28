@@ -14,12 +14,20 @@ if (!is_array($wireframe_b_global))
 */
 
 function memoise($key, callable $fn, $store = false) {
-  if (has_global('memo', $key))
-    return get_global('memo', $key);
+  $value = &the_global('memo', $key);
+  if (!is_null($memo))
+    return $memo;
 
   $value = $fn();
-  set_global('memo', $key, $value);
   return $value;
+  
+
+  // if (has_global('memo', $key))
+  //   return get_global('memo', $key);
+
+  // $value = $fn();
+  // set_global('memo', $key, $value);
+  // return $value;
 }
 
 /*
@@ -28,6 +36,17 @@ function memoise($key, callable $fn, $store = false) {
   set_global('group', 'key', $value);
   $value = get_global('group', 'key');
 */
+function &the_global($group, $key = null, $subkey = null) {
+  global $wireframe_b_global;
+  if (!is_array($wireframe_b_global[$group]))
+    $wireframe_b_global[$group] = array();
+  if (is_null($key))
+    return $wireframe_b_global[$group];
+  if (is_null($subkey))
+    return $wireframe_b_global[$group][$key];
+  return $wireframe_b_global[$group][$key][$subkey];
+}
+
 function has_global($group, $key = null, $subkey = null) {
   global $wireframe_b_global;
 

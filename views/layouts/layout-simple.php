@@ -1,5 +1,5 @@
 <?php get_header(); ?>
 <div class="container">
-  <%= main() %>
+  <%= content() %>
 </div>
 <?php get_footer(); ?>

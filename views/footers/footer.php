@@ -1,2 +1,3 @@
-(footer)
-<%= fixed_footer %>
+<div class='container'>
+  (footer)
+</div>

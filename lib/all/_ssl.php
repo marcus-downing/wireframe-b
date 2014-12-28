@@ -1,5 +1,7 @@
 <?php
 
+namespace wireframe_b;
+
 /*
 Various hooks to make sure SSL links are always written with SSL, whether that's in menus, furniture or content.
 */

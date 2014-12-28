@@ -4,13 +4,15 @@ namespace wireframe_b;
 
 add_action('admin_enqueue_scripts', __NAMESPACE__.'\admin_enqueue_scripts');
 function admin_enqueue_scripts() {
-  // if (file_exists())
+  if (file_exists(get_template_directory().'/js/admin.js'))
+    wp_enqueue_script('wireframe_b_admin', get_template_directory_uri().'/js/admin.js', array('jquery'), NULL, true);
 
-  
-
-  // glob_conditional_scripts('ie8', 'lt IE 9');
-  // glob_conditional_scripts('ie7', 'lt IE 8');
-  // glob_conditional_scripts('ie6', 'lt IE 7');
+  $conditions = array('ie8' => 'lt IE 9', 'ie9' => 'lt IE 10', 'ie10' => 'lt IE 11', 'ie11' => 'lt IE 12');
+  $conditions = apply_filters('wireframe_b\js\browser_conditional_scripts', $conditions);
+  foreach ($conditions as $browser => $condition) {
+    if (file_exists(get_template_directory().'/js/admin-'.$browser.'.js'))
+      echo "<!--[if $condition]><script type='text/javascript' src='$url'></script><![endif]-->\n";
+  }
 }
 
 add_action('wp_enqueue_scripts', __NAMESPACE__.'\enqueue_scripts', 9);
