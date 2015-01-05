@@ -23,6 +23,7 @@ class breadcrumbs extends \WP_Widget {
     $breadcrumbs = $this->locate_breadcrumbs($post);
     if (!empty($breadcrumbs))
       $breadcrumbs[count($breadcrumbs) - 1]->active = true;
+
     $breadcrumbs = apply_filters('wireframe_b-breadcrumb_location', $breadcrumbs);
     $breadcrumbs = array_values(array_filter($breadcrumbs));
     do_action('log', 'Wb: $breadcrumbs', '!post_title,permalink', $breadcrumbs);
@@ -84,7 +85,11 @@ class breadcrumbs extends \WP_Widget {
 
     // for pages, show actual ancestors
     if (is_page()) {
-      $pages = array_reverse(get_post_ancestors($post));
+      $pages = get_post_ancestors($post);
+      $pages = array_map('get_post', $pages);
+      $pages = array_values(array_filter($pages));
+      do_action('log', 'Wb: Breadcrumbs: Ancestors', $pages);
+      $pages = array_reverse($pages);
       $pages[] = $post;
       return $pages;
     }
