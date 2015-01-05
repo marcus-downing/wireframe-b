@@ -3,7 +3,7 @@ if (!have_posts()) {
   ?><%= include_content('no-search-results') %><?php
 } else {
   ?><heading class='page-header'>
-    <%= partial('breadcrumbs') %>
+    <?php the_widget('wireframe_b\breadcrumbs') ?>
     <h1><?php _e('Search results'); ?></h1>
   </heading>
 
