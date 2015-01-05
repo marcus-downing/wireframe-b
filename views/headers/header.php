@@ -1,5 +1,5 @@
 <div id='masthead' class='site-header' role='banner'>
-  <%= include_header('masthead') %>
+<%= include_header('masthead') %>
 </div>
 
 <nav role='navigation' id='header-navbar' class='navbar navbar-default'>
@@ -11,11 +11,11 @@
         <span class='icon-bar'></span>
         <span class='icon-bar'></span>
       </button>
-      <%= include_header('mini-brand') %>
+<%= include_header('mini-brand') %>
     </div>
 
     <div class='collapse navbar-collapse' id='header-navbar-collapse'>
-      <%= include_header('nav') %>
+<%= include_header('nav') %>
     </div>
   </div>
 </nav>
