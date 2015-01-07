@@ -39,7 +39,6 @@
   },
   "config": {
     "debug": false,
-    "min": false,
-    "stylesheets": "less"
+    "min": false
   }
 }

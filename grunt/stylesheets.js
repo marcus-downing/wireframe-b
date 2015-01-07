@@ -2,7 +2,7 @@
 module.exports = function (grunt, _) {
   var path = require('path');
 
-  var scheme = grunt.themeConfig.stylesheets;
+  var scheme = grunt.stylesheets;
   var extension = (scheme == 'less') ? '.less' : '.scss';
   var wildcard = '*'+extension;
 

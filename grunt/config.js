@@ -203,6 +203,16 @@ module.exports = function (grunt) {
   grunt.sources.unshift(tmp);
 
   var bootstrapdir = grunt.locateFile('node_modules/bootstrap');
+  if (grunt.file.exists(bootstrapdir+'/sass')) {
+    if (grunt.debug) console.log("Selecting SASS");
+    grunt.stylesheets = 'sass';
+  } else if (grunt.file.exists(bootstrapdir+'/less')) {
+    if (grunt.debug) console.log("Selecting LESS");
+    grunt.stylesheets = 'less';
+  } else {
+    if (grunt.debug) console.log("Selecting CSS");
+    grunt.stylesheets = 'css';
+  }
 
   grunt.dirs = {
     'themeSource': themeSrc,
