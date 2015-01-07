@@ -4,7 +4,7 @@ module.exports = function (grunt, _) {
   var md_files = grunt.locateFiles("docs", "*.md");
   if (grunt.debug) console.log("Docs: "+JSON.stringify(md_files, null, 4));
 
-  var template_file = grunt.locateFile("etc/template.html");
+  var template_file = grunt.locateFile("etc/docs-template.html");
   if (grunt.debug) console.log("Docs template: "+template_file);
 
   grunt.config.merge({
