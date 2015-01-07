@@ -1,6 +1,6 @@
 # Wireframe b
 
-A [WordPress](https://wordpress.org/) theme toolkit using [Bootstrap](http://getbootstrap.com/) and [Grunt](http://gruntjs.com/).
+A [WordPress](https://wordpress.org/) theme-building toolkit using [Bootstrap](http://getbootstrap.com/) and [Grunt](http://gruntjs.com/).
 
 This theme builder is intended for developers of complex themes, providing a balance between fast web pages, responsive design and a smooth development process. Rather than interactive design tools, its focus is on generating high-performance code using a compile step. To run it you'll need to be using Linux, Mac OS, Unix or similar, and familiar with running tasks on the command line.
 

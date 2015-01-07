@@ -15,7 +15,7 @@
     "email" : "",
     "url" : ""
   },
-  "devDependencies": {
+  "dependencies": {
     "grunt": "",
     "wireframe-b": ""
   },

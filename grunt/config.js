@@ -1,14 +1,3 @@
-// var processPHPfile = function(src, filepath) {
-//   src = src.replace(/^\<\?php/, '');
-//   src = src.replace(/\/\*[^]*?\*\//g, '');
-
-//   //  squish newlines a bit (but not too much)
-//   src = src.replace(/\n[\n\s]*\n/g, '\n\n');
-//   src = src.replace(/^[\n\s]*/, '');
-//   src = src.replace(/[\n\s]*$/, '\n');
-//   return src;
-// };
-
 module.exports = function (grunt) {
   var fs = require('fs')
     , util = require('util')
@@ -213,11 +202,13 @@ module.exports = function (grunt) {
   var tmp = themeSrc+'/tmp';
   grunt.sources.unshift(tmp);
 
+  var bootstrapdir = grunt.locateFile('node_modules/bootstrap');
+
   grunt.dirs = {
     'themeSource': themeSrc,
     'coreSource': _.last(grunt.sources),
     'tmp': tmp,
-    'base': grunt.locateFile('bootstrap/'+grunt.themeConfig.base),
+    'base': bootstrapdir,
     'dest': grunt.dest
   };
   if (grunt.debug) console.log('Directories: '+JSON.stringify(grunt.dirs, null, 4));
