@@ -16,7 +16,7 @@ module.exports = function (grunt, _) {
   if (grunt.debug) console.log("Found templates: "+JSON.stringify(template_files, null, 4));
   if (grunt.debug) console.log("Found results: "+JSON.stringify(result_files, null, 4));
 
-  grunt.loadNpmTasks('grunt-contrib-copy');
+  // grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.config.merge({
     copy: {
       template_php: {

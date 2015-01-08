@@ -6,10 +6,10 @@ module.exports = function (grunt, _) {
   var extension = (scheme == 'less') ? '.less' : '.scss';
   var wildcard = '*'+extension;
 
-  if (scheme == 'less')
-    grunt.loadNpmTasks('grunt-contrib-less');
-  else if (scheme == 'sass')
-    grunt.loadNpmTasks('grunt-contrib-sass');
+  // if (scheme == 'less')
+  //   grunt.loadNpmTasks('grunt-contrib-less');
+  // else if (scheme == 'sass')
+  //   grunt.loadNpmTasks('grunt-contrib-sass');
 
 
   //  build the theme's banner from the package contents
@@ -87,8 +87,8 @@ module.exports = function (grunt, _) {
 
   main_files =  _.union(base_files, all_files, main_core_files, main_files, [ tmp_responsive_file ]);
   admin_files = _.union(all_files, admin_files);
-  if (grunt.debug) console.log("Main LESS: "+JSON.stringify(main_files, null, 4));
-  if (grunt.debug) console.log("Admin LESS: "+JSON.stringify(admin_files, null, 4));
+  if (grunt.debug) console.log("Main stylesheets: "+JSON.stringify(main_files, null, 4));
+  if (grunt.debug) console.log("Admin stylesheets: "+JSON.stringify(admin_files, null, 4));
   writeImportFile(main_files, tmp_main_file);
 
 

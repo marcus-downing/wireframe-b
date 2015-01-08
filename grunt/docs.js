@@ -1,5 +1,5 @@
 module.exports = function (grunt, _) {
-  grunt.loadNpmTasks('grunt-markdown');
+  // grunt.loadNpmTasks('grunt-markdown');
 
   var md_files = grunt.locateFiles("docs", "*.md");
   if (grunt.debug) console.log("Docs: "+JSON.stringify(md_files, null, 4));

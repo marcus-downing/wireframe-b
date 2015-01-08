@@ -1,8 +1,8 @@
 //  Minify images
 module.exports = function (grunt, _) {
-  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  // grunt.loadNpmTasks('grunt-contrib-imagemin');
   // grunt.loadNpmTasks('grunt-responsive-images');
-  grunt.loadNpmTasks('grunt-image-resize');
+  // grunt.loadNpmTasks('grunt-image-resize');
 
 /*
   var sources = _(grunt.sources).map(function (src) {

@@ -1,6 +1,6 @@
 //  Compile the theme's functions.php
 module.exports = function (grunt, _) {
-  grunt.loadNpmTasks('grunt-contrib-concat');
+  // grunt.loadNpmTasks('grunt-contrib-concat');
   var path = require('path');
 
   var processPHPfile = function(src, filepath) {
@@ -43,7 +43,7 @@ module.exports = function (grunt, _) {
     var namespace = _.has(widget_namespaces, file) ? widget_namespaces[file] : 'wireframe_b';
     var classname = path.basename(file).replace(/\..*?$/, '');
     return "register_widget('"+namespace+'\\'+classname+"');\n";
-  });
+  }).value().join("\n");
 
   grunt.file.write(temp_widgets_file, widgets_content+'\n\n'+widgets_register);
 

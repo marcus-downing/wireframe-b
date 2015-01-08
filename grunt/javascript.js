@@ -1,6 +1,6 @@
 module.exports = function (grunt, _) {
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  // grunt.loadNpmTasks('grunt-contrib-jshint');
+  // grunt.loadNpmTasks('grunt-contrib-uglify');
 
 
   var base_js = [grunt.dirs.base+"/dist/js/bootstrap.min.js"];

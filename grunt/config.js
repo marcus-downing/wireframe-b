@@ -224,9 +224,18 @@ module.exports = function (grunt) {
   if (grunt.debug) console.log('Directories: '+JSON.stringify(grunt.dirs, null, 4));
 
 
+  // loading tasks from local
+   var modulesDir = grunt.dirs.coreSource+'/node_modules';
+  _(fs.readdirSync(modulesDir)).each(function (module) {
+    var tasksDir = modulesDir+'/'+module+'/tasks';
+    // if (grunt.debug) console.log('Loading tasks from '+tasksDir);
+    if (grunt.file.exists(tasksDir))
+      grunt.loadTasks(tasksDir);
+  });
+
   // extra configuration
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-clean');
+  // grunt.loadNpmTasks('grunt-contrib-watch');
+  // grunt.loadNpmTasks('grunt-contrib-clean');
 
   require('./functions.js')(grunt, _);
   require('./stylesheets.js')(grunt, _);
@@ -247,7 +256,7 @@ module.exports = function (grunt) {
     'copy',
     'concat', 
     'uglify', 
-    'less',
+    grunt.stylesheets, // either less or sass
     // 'image_resize',
     // 'responsive_images',
     'imagemin',
