@@ -2,7 +2,7 @@
 
 namespace wireframe_b;
 
-class nav_menu extends WP_Widget {
+class nav_menu extends \WP_Widget {
   function nav_menu () {
     $this->WP_Widget('nav_menu', 'Navigation Menu', array(
       'classname' => 'nav_menu',
