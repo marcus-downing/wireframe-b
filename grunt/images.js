@@ -17,10 +17,14 @@ module.exports = function (grunt, _) {
 
   var tmpImages = grunt.dirs.tmp+'/images';
 
-  var sources = grunt.locateFiles("images", "*.{png,jpg,gif}");
-  if (grunt.debug) console.log("Images: "+JSON.stringify(sources, null, 4));
-  var x2_sources = grunt.locateSetFiles("images", "2x", "*.{png,jpg,gif}");
-  var x4_sources = grunt.locateSetFiles("images", "4x", "*.{png,jpg,gif}");
+  var sources_1x = grunt.locateSetFiles("images", "1x", "*.{png,jpg,gif}");
+  var sources_2x = grunt.locateSetFiles("images", "2x", "*.{png,jpg,gif}");
+  var sources_4x = grunt.locateSetFiles("images", "4x", "*.{png,jpg,gif}");
+  if (grunt.debug) console.log("Images: "+JSON.stringify({
+    "1x": sources_1x,
+    "2x": sources_2x,
+    "4x": sources_4x
+  }, null, 4));
 
   var screenshot = grunt.locateFile("images/screenshot.png");
   if (grunt.debug) console.log("Screenshot: "+screenshot);
@@ -60,7 +64,7 @@ module.exports = function (grunt, _) {
       actual: {
         chdir: grunt.dirs.themeSource,
         // expand: true,
-        src: sources,
+        src: sources_1x,
         dest: grunt.dest
       }
     }
