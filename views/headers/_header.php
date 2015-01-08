@@ -40,4 +40,4 @@
 <header id='header'>
 <%= inner_header() %>
 </header>
-<section class='body'>
+<section id='body'>
