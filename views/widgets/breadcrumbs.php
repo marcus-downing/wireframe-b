@@ -3,15 +3,16 @@
 namespace wireframe_b;
 
 class breadcrumbs extends \WP_Widget {
-  function breadcrumbs() {
-    $this->WP_Widget('breadcrumbs', 'Breadcrumbs', array(
+  function __construct () {
+    parent::__construct('breadcrumbs', __('Breadcrumbs', 'wireframe_b'), array(
       'classname' => 'breadcrumbs',
-      'description' => 'A listing of your current location'
+      'description' => __('A listing of your current location', 'wireframe_b')
       ));
   }
 
   function form ($instance) {
     ?><span class='bang-indicator'></span><?php
+    echo "<p>"; wp_widget_description(); echo "</p>";
   }
 
   function update ($new_instance, $old_instance) {
