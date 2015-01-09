@@ -39,6 +39,9 @@
 <body <?php body_id(); body_class(); body_data(); ?>>
 <div id='body-wrapper'>
 <header id='header'>
+<div id='header-inner'>
 <%= inner_header() %>
+</div>
 </header>
 <section id='body'>
+<div id='body-inner'>
