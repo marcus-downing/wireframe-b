@@ -117,18 +117,12 @@ module.exports = function (grunt) {
       return grunt.file.exists(src) && fs.statSync(src).isDirectory();
     }).value();
 
-    if (grunt.debug) {
-      var sets = {};
-      _(sources).each(function (src) {
-        var dirsets = fs.readdirSync(src);
-        _(dirsets).each(function (dirset) {
-          console.log("Found source set: "+dirset);
-        });
-      });
-    }
-
-    // ...
-    return sources;
+    return _(sources).map(function (src) {
+      return _(fs.readdirSync(src)).filter(function (dirset) {
+        var path = src+'/'+dirset;
+        return fs.statSync(path).isDirectory();
+      }).value();
+    }).flatten().uniq().value();
   };
 
   grunt.locateSetFiles = function (path, set, pattern, key) {
@@ -245,6 +239,7 @@ module.exports = function (grunt) {
   require('./views.js')(grunt, _);
   require('./colours.js')(grunt, _);
   require('./tests.js')(grunt, _);
+  require('./api.js')(grunt, _);
   require('./docs.js')(grunt, _);
   if (grunt.debug) console.log("\n\n");
 

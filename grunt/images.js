@@ -29,6 +29,8 @@ module.exports = function (grunt, _) {
   var screenshot = grunt.locateFile("images/screenshot.png");
   if (grunt.debug) console.log("Screenshot: "+screenshot);
 
+  var imageDest = grunt.dest+'/images';
+
   grunt.config.merge({
     image_resize: {
       x4_x2: {
@@ -65,7 +67,7 @@ module.exports = function (grunt, _) {
         chdir: grunt.dirs.themeSource,
         // expand: true,
         src: sources_1x,
-        dest: grunt.dest
+        dest: imageDest
       }
     }
   });
@@ -76,7 +78,7 @@ module.exports = function (grunt, _) {
         screenshot: {
           chdir: grunt.dirs.themeSource,
           src: screenshot,
-          dest: grunt.dest
+          dest: imageDest
         }
       }
     })

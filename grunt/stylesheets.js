@@ -91,6 +91,9 @@ module.exports = function (grunt, _) {
   if (grunt.debug) console.log("Admin stylesheets: "+JSON.stringify(admin_files, null, 4));
   writeImportFile(main_files, tmp_main_file);
 
+  var stylesheetSets = _(grunt.locateSets(scheme)).without('main', 'admin', 'all', 'common', 'xs-only', 'sm-only', 'sm', 'md-only', 'md', 'lg').value();
+  if (grunt.debug) console.log("Stylesheet sets: "+JSON.stringify(stylesheetSets, null, 4));
+
 
   //  options including includable paths
   var include_paths = [scheme+"/all", scheme+"/common"]
@@ -100,8 +103,21 @@ module.exports = function (grunt, _) {
     sourceMap: true,
     sourceMapFilename: grunt.dest+'/style.css.map'
   };
+  var bootstrap_less = path.relative(grunt.dirs.coreSource+'/less/admin', grunt.dirs.base+'/'+scheme);
+  if (grunt.debug)
+    console.log("Bootstrap LESS relative path: "+bootstrap_less);
   var less_options = {
     paths: include_paths,
+    modifyVars: {
+      bootstrap_less: '"'+bootstrap_less+'"'
+    }
+    // process: function (less_code) {
+    //   return grunt.template.process(less_code, { data: {
+    //     bootstrap_less: function () {
+    //       return grunt.dirs.base+'/'+scheme;
+    //     }
+    //   }});
+    // }
   };
   if (grunt.themeConfig.min) {
     less_options.compress = true;
@@ -132,7 +148,21 @@ module.exports = function (grunt, _) {
       }
     });
 
-    var sets = grunt.locateSets();
+    _(stylesheetSets).each(function (set) {
+      var setFiles = grunt.locateSetFiles(scheme, set, wildcard, set+extension);
+
+      if (!_(setFiles).isEmpty()) {
+        var setConfig = { less: { } };
+        setConfig.less[set] = {
+          options: less_options,
+          src: setFiles,
+          dest: grunt.dest+'/'+set+'.css'
+        };
+
+        grunt.config.merge(setConfig);
+      }
+    });
+
   } else if (scheme == 'sass') {
     // .. todo SASS
   } else {

@@ -18,7 +18,7 @@ class leftnav_menu extends \WP_Widget {
   function update ($new_instance, $old_instance) {
 
   }
-  
+
   function options ($instance) {
     $options = get_option('wireframe_b:nav_menu');
 
@@ -39,11 +39,22 @@ class leftnav_menu extends \WP_Widget {
     do_action('log', 'Wb: leftnav_menu');
     $options = $this->options($instance);
 
-    echo $args->before_widget;
-    echo "<ul class='list-group'>";
-    echo "<li class='list-group-item'><a href='/'>Home</a></li>";
-    echo "</ul>";
-    echo $args->after_widget;
+    //  build the options
+    $leftnav_args = array(
+      'title_li' => '',
+      // 'include' => implode(',', $inc),
+      'post_status' => 'publish',
+      'sort_column' => 'menu_order',
+      'sort_order' => 'ASC',
+    );
+    $leftnav_args = apply_filters('the_leftnav__wp_list_pages_args', $leftnav_args);
+
+    // echo the list
+    echo "<div class='list-group'><ul>";
+    if ($options->show_home)
+      echo "<li><a class='list-group-item' href='/'>Home</a></li>";
+    wp_list_pages($leftnav_args);
+    echo "</ul></div>";
   }
 
 }
