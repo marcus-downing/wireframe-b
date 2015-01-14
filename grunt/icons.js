@@ -9,7 +9,10 @@ module.exports = function (grunt, _) {
       icons: {
         src: icon_files,
         dest: grunt.dest+'/fonts',
+        destCss: grunt.dirs.themeSource+'/tmp/fonts',
+        htmlDemo: false,
         options: {
+          relativeFontPath: 'fonts/',
           syntax: 'bootstrap',
           autoHint: false,
         }

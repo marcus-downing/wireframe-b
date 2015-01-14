@@ -11,6 +11,9 @@ module.exports = function (grunt, _) {
   main_js = _.union(base_js, all_js, main_js);
   admin_js = _.union(base_js, all_js, admin_js);
 
+  var jsSets = _(grunt.locateSets('js')).without('main').value();
+  if (grunt.debug) console.log("Javascript sets: "+JSON.stringify(jsSets, null, 4));
+
   grunt.config.merge({
     jshint: {
       all: grunt.locateFiles('js')
@@ -40,8 +43,34 @@ module.exports = function (grunt, _) {
     watch: {
       javascripts: {
         files: grunt.locateFiles('js'),
-        tasks: ['jshint', 'uglify']
+        tasks: ['jshint', 'concat', 'uglify']
       }
+    }
+  });  
+
+  // build many sets
+
+    _(jsSets).each(function (set) {
+    var setFiles = grunt.locateSetFiles('js', set, '*.js');
+
+    if (!_(setFiles).isEmpty()) {
+      var setConfig = { concat: { }, uglify: { } };
+      setConfig.concat[set+'_js'] = {
+        options: {
+          sourceMap: true
+        },
+        src: setFiles,
+        dest: grunt.dest+'/js/'+set+'.js'
+      };
+      setConfig.uglify[set+'_js'] = {
+        options: {
+          sourceMap: true
+        },
+        src: setFiles,
+        dest: grunt.dest+'/js/'+set+'.min.js'
+      };
+
+      grunt.config.merge(setConfig);
     }
   });
 };

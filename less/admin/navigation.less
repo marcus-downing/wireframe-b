@@ -1,0 +1,38 @@
+body.appearance_page_navigation {
+  table.navigation_tree {
+    width: 100%;
+    border-collapse: collapse;
+
+    td {
+      width: 50%;
+      padding-right: 10px;
+      line-height: 32px;
+      .dashicons { line-height: 32px; }
+      vertical-align: middle;
+
+      border-top: 1px solid #f0f0f0;
+
+      white-space: nowrap;
+
+      label.disabled {
+        color: #777;
+      }
+
+      select {
+        width: 100%;
+      }
+    }
+
+    tr.current_page_row, tr.from_row {
+      td {
+        background: #ffffd8;
+      }
+    }
+
+    // tr:first-child {
+    //   td {
+    //     border-top: 0 none;
+    //   }
+    // }
+  }
+}

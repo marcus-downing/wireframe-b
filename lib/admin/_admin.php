@@ -5,6 +5,8 @@ namespace wireframe_b\admin;
 add_action('admin_init', function () {
   remove_submenu_page( 'themes.php', 'theme-editor.php' );
   remove_submenu_page('plugins.php', 'plugin-editor.php' );
+  wp_enqueue_style('wb-admin', get_template_directory_uri().'/admin.css');
+  wp_enqueue_script('wb-admin', get_template_directory_uri().'/js/admin.js', array('jquery'));
 });
 
 add_action('wireframe_b:settings_page_ident', function ($title) {

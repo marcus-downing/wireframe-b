@@ -1,11 +1,9 @@
 <%= import_base_variables() %>
 
-/* Extra small devices (phones) */
 @media (max-width: @screen-xs-max) {
   <%= import_stylesheet_set('xs-only') %>
 }
 
-/* Small devices (tablets) */
 @media (min-width: @screen-sm-min) {
   <%= import_stylesheet_set('sm') %>
 }
@@ -14,7 +12,6 @@
   <%= import_stylesheet_set('sm-only') %>
 }
 
-/* Medium devices (desktops) */
 @media (min-width: @screen-md-min) {
   <%= import_stylesheet_set('md') %>
 }
@@ -23,10 +20,10 @@
   <%= import_stylesheet_set('md-only') %>
 }
 
-/* Large devices (large desktops) */
 @media (min-width: @screen-lg-min) {
   <%= import_stylesheet_set('lg') %>
 }
+
 @media print {
   <%= import_stylesheet_set('print') %>
 }

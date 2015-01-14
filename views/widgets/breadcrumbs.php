@@ -27,7 +27,7 @@ class breadcrumbs extends \WP_Widget {
 
     $breadcrumbs = apply_filters('wireframe_b-breadcrumb_location', $breadcrumbs);
     $breadcrumbs = array_values(array_filter($breadcrumbs));
-    do_action('log', 'Wb: $breadcrumbs', '!post_title,permalink', $breadcrumbs);
+    do_action('log', 'Wb: $breadcrumbs', '!ID,post_title,permalink', $breadcrumbs);
 
     if (empty($breadcrumbs))
       return;
@@ -89,7 +89,7 @@ class breadcrumbs extends \WP_Widget {
       $pages = get_post_ancestors($post);
       $pages = array_map('get_post', $pages);
       $pages = array_values(array_filter($pages));
-      do_action('log', 'Wb: Breadcrumbs: Ancestors', $pages);
+      do_action('log', 'Wb: Breadcrumbs: Ancestors', '!ID,post_title', $pages);
       $pages = array_reverse($pages);
       $pages[] = $post;
       return $pages;

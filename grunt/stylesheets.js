@@ -48,7 +48,7 @@ module.exports = function (grunt, _) {
       });
     }
     return _.map(sources, function (source) {
-      return "@import \""+source+"\";";
+      return "@import (less) \""+source+"\";";
     }).join("\n");
   }
 
@@ -85,7 +85,31 @@ module.exports = function (grunt, _) {
   }});
   grunt.file.write(tmp_responsive_file, responsive_code);
 
-  main_files =  _.union(base_files, all_files, main_core_files, main_files, [ tmp_responsive_file ]);
+  // fonts
+  var font_stylesheets = _(grunt.locateSets("fonts")).map(function (fontname) {
+    return grunt.locateSetFiles("fonts", fontname, "stylesheet.css");
+  }).flatten().value();
+  var tmp_font_file = grunt.dirs.tmp+'/less/_fonts.less';
+  writeImportFile(font_stylesheets, tmp_font_file);
+
+  var font_files = _(grunt.locateSets("fonts")).map(function (fontname) {
+    return grunt.locateFiles("fonts/"+fontname, "*.{eot,woff,ttf}");
+  }).flatten().value();
+  if (grunt.debug) console.log("Font files: "+JSON.stringify(font_files, null, 4));
+
+  // var tmp_font_files = [ tmp_font_file ];
+
+
+  // var tmp_font_file = grunt.dirs.tmp+'/less/_fonts.less';
+  // var fonts_code = _(font_files).map(function (fontfile) {
+  //   fontfile = path.relative(grunt.dirs.coreSource+'/less/main', fontfile);
+  //   return "@import \""+fontfile+"\";";
+  // }).value().join("\n");
+  // console.log("Fonts: "+fonts_code);
+  // grunt.file.write(tmp_font_file, fonts_code);
+
+
+  main_files =  _.union(base_files, [ tmp_font_file ], all_files, main_core_files, main_files, [ tmp_responsive_file ]);
   admin_files = _.union(all_files, admin_files);
   if (grunt.debug) console.log("Main stylesheets: "+JSON.stringify(main_files, null, 4));
   if (grunt.debug) console.log("Admin stylesheets: "+JSON.stringify(admin_files, null, 4));
@@ -96,7 +120,7 @@ module.exports = function (grunt, _) {
 
 
   //  options including includable paths
-  var include_paths = [scheme+"/all", scheme+"/common"]
+  var include_paths = [scheme+"/all", scheme+"/common", "fonts"];
   var less_main_options = {
     paths: include_paths,
     banner: themebanner,
@@ -140,6 +164,19 @@ module.exports = function (grunt, _) {
         },
       },
 
+      copy: {
+        fonts: {
+          files: [
+            {
+              expand: true,
+              flatten: true,
+              src: font_files,
+              dest: grunt.dest+'/fonts'
+            }
+          ]
+        }
+      },  
+
       watch: {
         stylesheets: {
           files: _.union(all_files, main_files),
@@ -168,70 +205,4 @@ module.exports = function (grunt, _) {
   } else {
     // .. todo ???
   }
-
-/*
-  editor_files = grunt.locateSetFiles("less", "editor", );
-  if (grunt.file.exists(grunt.dirs.theme_source+"/less/editor/*.less")) {
-    grunt.config(['less', 'editor'], {
-      options: less_options,
-      files: {
-        "../editor.css": ["less/editor/*.less"]
-      }
-    });
-  }
-  if (grunt.file.exists("less/all/*.less", "less/admin/*.less")) {
-    grunt.config(['less', 'admin'], {
-      options: less_options,
-      files: {
-        "../admin.css": ["less/all/*.less", "less/admin/*.less"]
-      }
-    });
-  }
-
-  // modify the config with optional and variant bits
-  if (grunt.file.exists("less/ie7/*.less")) {
-    grunt.config(['less', 'ie7'], {
-      options: less_options,
-      files: {
-        "../ie7.css": ["less/ie7/*.less"]
-      }
-    });
-  }
-
-  if (grunt.file.exists("less/ie8/*.less")) {
-    grunt.config(['less', 'ie8'], {
-      options: less_options,
-      files: {
-        "../ie8.css": ["less/ie8/*.less"]
-      }
-    });
-  }
-
-  if (grunt.file.exists("less/ie9/*.less")) {
-    grunt.config(['less', 'ie9'], {
-      options: less_options,
-      files: {
-        "../ie9.css": ["less/ie9/*.less"]
-      }
-    });
-  }
-
-  if (grunt.file.exists("less/ie10/*.less")) {
-    grunt.config(['less', 'ie10'], {
-      options: less_options,
-      files: {
-        "../ie10.css": ["less/ie10/*.less"]
-      }
-    });
-  }
-
-  if (grunt.file.exists("less/ie11/*.less")) {
-    grunt.config(['less', 'ie11'], {
-      options: less_options,
-      files: {
-        "../ie11.css": ["less/ie11/*.less"]
-      }
-    });
-  }
-  */
 };
