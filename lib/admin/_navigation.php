@@ -129,10 +129,12 @@ add_action('admin_menu', function () {
           </form>
         </div>
         <div class='col-md-5 col-lg-4'>
-          <h3>Preview:</h3>
-          <?php
-            the_widget('wireframe_b\navigation');
-          ?>
+          <div class='well'>
+
+            <?php
+              the_widget('wireframe_b\navigation');
+            ?>
+          </div>
         </div>
       </div>
 

@@ -58,17 +58,33 @@ jQuery(function ($) {
       // } else if (show_from == 5) {
       //   $("#show_fifth_when option[value=none]").prop('disabled', true);
       // }
-      if ($("#show_first_when").val() != 'all') {
+      var show_first_when = $("#show_first_when").val();
+      var show_second_when = $("#show_second_when").val();
+      var show_third_when = $("#show_third_when").val();
+      var show_fourth_when = $("#show_fourth_when").val();
+      var show_fifth_when = $("#show_fifth_when").val();
+
+      if (show_first_when != 'all' && show_from <= 1) {
         $("#show_second_when option[value=all]").prop('disabled', true);
       }
-      if ($("#show_second_when").val() != 'all') {
+      if (show_second_when != 'all' && show_from <= 2) {
         $("#show_third_when option[value=all]").prop('disabled', true);
       }
-      if ($("#show_third_when").val() != 'all') {
+      if (show_third_when != 'all' && show_from <= 3) {
         $("#show_fourth_when option[value=all]").prop('disabled', true);
       }
-      if ($("#show_fourth_when").val() != 'all') {
+      if (show_fourth_when != 'all' && show_from <= 4) {
         $("#show_fifth_when option[value=all]").prop('disabled', true);
+      }
+
+      if (show_first_when == 'none') {
+        $("#show_second_when, #show_third_when, #show_fourth_when, #show_fifth_when").val('none').prop('disabled', true);
+      } else if (show_second_when == 'none') {
+        $("#show_third_when, #show_fourth_when, #show_fifth_when").val('none').prop('disabled', true);
+      } else if (show_third_when == 'none') {
+        $("#show_fourth_when, #show_fifth_when").val('none').prop('disabled', true); 
+      } else if (show_fourth_when == 'none') {
+        $("#show_fifth_when").val('none').prop('disabled', true);
       }
 
 

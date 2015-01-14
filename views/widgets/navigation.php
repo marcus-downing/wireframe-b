@@ -132,7 +132,6 @@ class navigation extends \WP_Widget {
   }
 
   function widget ($args, $instance) {
-    do_action('log', 'Wb: leftnav_menu');
     $nav = $this->options();
     $show_home = $nav->show == 0;
     do_action('log', 'Wb: navigation: options', $nav);
@@ -144,12 +143,24 @@ class navigation extends \WP_Widget {
     $this->remember_post($current_post);
     do_action('log', 'Wb: navigation: current page', '!ID,post_title', $current_post);
 
-    $ancestors = empty($current_post) ? array() : array_reverse(get_ancestors($current_post->ID, $current_post->post_type));
+    $raw_ancestors = empty($current_post) ? array() : array_reverse(get_ancestors($current_post->ID, $current_post->post_type));
+    $ancestors = $raw_ancestors;
     array_unshift($ancestors, 0);
+    if ($current_post->post_type == 'page')
+      array_push($ancestors, $current_post->ID);
     do_action('log', 'Wb: navigation: ancestors', $ancestors);
 
 
     //  absolute
+    $pages = get_pages(array(
+      'number' => 1000,
+      'sort_column' => 'menu_order',
+      'sort_order' => 'ASC',
+      ));
+    $this->remember_posts($pages);
+    $this->has_all_pages = true;
+
+
     $show_when = array(
       null,
       $nav->show_first_when,
@@ -158,32 +169,74 @@ class navigation extends \WP_Widget {
       $nav->show_fourth_when,
       $nav->show_fifth_when
       );
-
-    $minlevel = $nav->show;
-
-    //  save database effor by preloading all pages
-    $pages = get_pages(array());
-    do_action('log', 'Wb: navigation: loaded all pages', '!ID,post_title', $pages);
-    $this->remember_posts($pages);
-    $this->has_all_pages = true;
-    do_action('log', 'Wb: navigation: memory of all pages', '!ID,post_title', $this->posts_by_id);
-
-
     foreach ($show_when as $level => $when) {
       if (is_null($when) || $when == 'none' || $level < $nav->show) continue;
 
       $node = isset($ancestors[$level]) ? $ancestors[$level] : null;
       if (!is_null($node))
         $inc[] = $node;
+    }
 
-      if ($when == 'section') {
-        $parent = isset($ancestors[$level - 1]) ? $ancestors[$level] : null;
-        $children = $this->get_children_of($parent);
-      } else if ($when == 'all') {
-        if ($level == 1) {
+    if ($nav->show_first_when == 'all') {
+      $first = $this->get_children_of(0);
+      do_action('log', 'Wb: navigation: 1st level', $first);
+      $inc = array_merge($inc, $first);
+    }
 
-        }
-      }
+    if ($nav->show_second_when == 'all') {
+      $first = $this->get_children_of(0);
+      $second = $this->get_children_of($first);
+      do_action('log', 'Wb: navigation: 2nd level', $second);
+      $inc = array_merge($inc, $second);
+    } else if ($nav->show_second_when == 'section') {
+      $second = $this->get_children_of($ancestors[1]);
+      do_action('log', 'Wb: navigation: 2nd level', $second);
+      $inc = array_merge($inc, $second);
+    }
+
+    if ($nav->show_third_when == 'all') {
+      $first = $this->get_children_of(0);
+      $second = $this->get_children_of($first);
+      $third = $this->get_children_of($second);
+      do_action('log', 'Wb: navigation: 3rd level', $third);
+      $inc = array_merge($inc, $third);
+    } else if ($nav->show_third_when == 'section') {
+      $second = $this->get_children_of($ancestors[1]);
+      $third = $this->get_children_of($second);
+      do_action('log', 'Wb: navigation: 3rd level', $third);
+      $inc = array_merge($inc, $third);
+    }
+
+    if ($nav->show_fourth_when == 'all') {
+      $first = $this->get_children_of(0);
+      $second = $this->get_children_of($first);
+      $third = $this->get_children_of($second);
+      $fourth = $this->get_children_of($third);
+      do_action('log', 'Wb: navigation: 4th level', $fourth);
+      $inc = array_merge($inc, $fourth);
+    } else if ($nav->show_fourth_when == 'section') {
+      $second = $this->get_children_of($ancestors[1]);
+      $third = $this->get_children_of($second);
+      $fourth = $this->get_children_of($third);
+      do_action('log', 'Wb: navigation: 4th level', $fourth);
+      $inc = array_merge($inc, $fourth);
+    }
+
+    if ($nav->show_fifth_when == 'all') {
+      $first = $this->get_children_of(0);
+      $second = $this->get_children_of($first);
+      $third = $this->get_children_of($second);
+      $fourth = $this->get_children_of($third);
+      $fifth = $this->get_children_of($fourth);
+      do_action('log', 'Wb: navigation: 5th level', $fifth);
+      $inc = array_merge($inc, $fifth);
+    } else if ($nav->show_fifth_when == 'section') {
+      $second = $this->get_children_of($ancestors[1]);
+      $third = $this->get_children_of($second);
+      $fourth = $this->get_children_of($third);
+      $fifth = $this->get_children_of($fourth);
+      do_action('log', 'Wb: navigation: 5th level', $fifth);
+      $inc = array_merge($inc, $fifth);
     }
 
 
@@ -216,9 +269,9 @@ class navigation extends \WP_Widget {
       }
 
       if ($nav->show_ancestors_when == 'all') {
-        $parent_ancestors = $ancestors;
+        $parent_ancestors = $raw_ancestors;
         if ($nav->show > 1)
-          $parent_ancestors = array_slice($ancestors, $nav->show - 1);
+          $parent_ancestors = array_slice($ancestors, $nav->show - 2);
         $ancestor_siblings = $this->get_children_of($parent_ancestors, $current_post->post_type);
         $inc = array_merge($inc, $ancestor_siblings);
       }
@@ -233,17 +286,19 @@ class navigation extends \WP_Widget {
 
     //  build hierarchy of pages
     $posts = $this->get_posts($inc);
+    usort($posts, function ($a, $b) {
+      if ($a->menu_order != $b->menu_order)
+        return $a->menu_order - $b->menu_order;
+      return $a->ID - $b->ID;
+    });
     do_action('log', 'Wb: navigation: pages', '!ID,post_title', $posts);
     $inc = get_page_hierarchy($posts);
     $inc = array_keys($inc);
     $inc = apply_filters('wireframe_b:navigation:hierarchy', $inc);
     do_action('log', 'Wb: navigation: hierarchy', $inc);
 
-    //  array of posts by id
-
     $indents = array();
     $base_indent = $show_home ? 1 : 0;
-
 
     //  draw the list
     if (!empty($posts) || $show_home) {
