@@ -1,72 +1,42 @@
 //  Minify images
 module.exports = function (grunt, _) {
   // grunt.loadNpmTasks('grunt-contrib-imagemin');
-  // grunt.loadNpmTasks('grunt-responsive-images');
   // grunt.loadNpmTasks('grunt-image-resize');
 
-/*
-  var sources = _(grunt.sources).map(function (src) {
-    return src+"/images";
-  }).filter(function (src) {
-    return grunt.file.exists(src);
-  }).map(function (src) {
-    return src+"/ ** / *.{png,jpg,gif}";
-  }).value();
-*/
-  // if (grunt.debug) console.log("image min sources: "+JSON.stringify(sources, null, 4));
+
+  //  get merged config
+  var cfg = {};
+  _(grunt.sources).each(function (src) {
+    var images_json_file = src+'/etc/images.json';
+    if (grunt.file.exists(images_json_file)) {
+      var cfg_json = grunt.file.readJSON(images_json_file);
+      _.defaults(cfg, cfg_json);
+    }
+  });
+  console.log("Image config: "+JSON.stringify(cfg, null, 4));
 
   var tmpImages = grunt.dirs.tmp+'/images';
 
-  var sources_1x = grunt.locateSetFiles("images", "1x", "*.{png,jpg,gif}");
-  var sources_2x = grunt.locateSetFiles("images", "2x", "*.{png,jpg,gif}");
-  var sources_4x = grunt.locateSetFiles("images", "4x", "*.{png,jpg,gif}");
-  if (grunt.debug) console.log("Images: "+JSON.stringify({
-    "1x": sources_1x,
-    "2x": sources_2x,
-    "4x": sources_4x
-  }, null, 4));
+  var sources = grunt.locateFiles("images", "*.{png,jpg,gif}");
+  if (grunt.debug) console.log("Images: "+JSON.stringify(sources, null, 4));
 
   var screenshot = grunt.locateFile("images/screenshot.png");
   if (grunt.debug) console.log("Screenshot: "+screenshot);
 
   var imageDest = grunt.dest+'/images';
 
-  grunt.config.merge({
-    image_resize: {
-      x4_x2: {
-        
-      }
-    },
+  var image_resize_conf = {
 
-    // responsive_images: {
-    //   x4: {
-    //     options: {
-    //       sizes: [
-    //         { name: "1x", width: "25%" },
-    //         { name: "2x", width: "50%", suffix: "@2x" },
-    //         { name: "4x", width: "100%", suffix: "@4x" }
-    //       ]
-    //     },
-    //     src: x4_sources,
-    //     dest: tmpImages
-    //   },
-    //   x2: {
-    //     options: {
-    //       sizes: [
-    //         { name: "1x", width: "50%" },
-    //         { name: "2x", width: "100%", suffix: "@2x" }
-    //       ]
-    //     },
-    //     src: x2_sources,
-    //     dest: tmpImages
-    //   }
-    // },
+  };
+
+  grunt.config.merge({
+    image_resize: image_resize_conf,
 
     imagemin: {
       actual: {
         chdir: grunt.dirs.themeSource,
         // expand: true,
-        src: sources_1x,
+        src: sources,
         dest: imageDest
       }
     }

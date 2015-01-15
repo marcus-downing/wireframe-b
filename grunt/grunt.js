@@ -14,7 +14,19 @@ module.exports = function (grunt) {
       var pkg = grunt.file.readJSON(pkg_file);
       _.defaults(grunt.themeConfig, pkg.config);
     }
+    if (grunt.file.exists(src+'/etc') && fs.statSync(src+'/etc').isDirectory()) {
+      var files = fs.readdirSync(src+'/etc');
+      _(files).filter(function (etcFile) {
+        return path.extname(etcFile) == '.json';
+      }).map(function (etcFile) {
+        return src+'/etc/'+etcFile;
+      }).each(function (etcFile) {
+        var cfg_json = grunt.file.readJSON(etcFile);
+        _.defaults(grunt.themeConfig, cfg_json);
+      });
+    }
   });
+
   grunt.debug = grunt.themeConfig.debug;
   if (grunt.debug) console.log("Debug flag ON!\n");
 

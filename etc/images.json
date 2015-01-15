@@ -1,0 +1,6 @@
+{
+  "image-sizes": [
+    { "name": "icon", "title": "Icon", "width": 128, "height": 128 },
+    { "name": "jumbotron", "title": "Jumbotron bg", "width": 2048, "height": 256 }
+  ]
+}
