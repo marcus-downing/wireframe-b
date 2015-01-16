@@ -94,7 +94,7 @@ module.exports = function (grunt, _) {
       exact_images_2x: {
         options: {
           sizes: [
-            { "name": "2x1x", "width": "50%", "height": "50%", "suffix": "@1x", "rename": false },
+            { "name": "2x1x", "width": "50%", "height": "50%", "rename": false },
             { "name": "2x2x","width": "100%", "height": "100%", "suffix": "@2x", "rename": false }
           ],
           newFilesOnly: true
@@ -105,7 +105,7 @@ module.exports = function (grunt, _) {
       exact_images_4x: {
         options: {
           sizes: [
-            { "name": "4x1x", "width": "25%", "height": "25%", "suffix": "@1x", "rename": false },
+            { "name": "4x1x", "width": "25%", "height": "25%", "rename": false },
             { "name": "4x2x", "width": "50%", "height": "50%", "suffix": "@2x", "rename": false },
             { "name": "4x4x", "width": "100%", "height": "100%", "suffix": "@4x", "rename": false }
           ],
@@ -134,8 +134,8 @@ module.exports = function (grunt, _) {
 
       flex_images: {
         cwd: tmpDir+'/',
-        // expand: true,
-        src: './**/*.{png,jpg,gif,svg}',
+        expand: true,
+        src: '{,*/}*.{png,jpg,gif,svg}',
         dest: destDir
       }
     }
