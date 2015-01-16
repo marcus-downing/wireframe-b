@@ -1,6 +1,6 @@
 <?php
 
-namespace wireframe_b\admin;
+namespace wireframe_b;
 
 add_action('admin_init', function () {
   remove_submenu_page( 'themes.php', 'theme-editor.php' );

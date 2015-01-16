@@ -1,12 +1,12 @@
 <?php
 
-namespace wireframe_b\admin;
+namespace wireframe_b;
 
 /*
   Function to output <picture> and srcset= correctly
 */
 
-function the_picture($file, $args) {
+function the_picture($file, $args = array()) {
   $args = wp_parse_args($args, array(
     'alt' => null,
     'title' => null,
