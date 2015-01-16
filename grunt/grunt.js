@@ -1,7 +1,6 @@
 module.exports = function (grunt) {
   var fs = require('fs')
     , util = require('util')
-    , ini = require('ini')
     , path = require('path')
     , _ = require('lodash-node');
 
@@ -30,165 +29,8 @@ module.exports = function (grunt) {
   grunt.debug = grunt.themeConfig.debug;
   if (grunt.debug) console.log("Debug flag ON!\n");
 
-
-
-  //  functions to find files across multiple source folders
-
-  grunt.isValidFile = function (file) {
-    var paths = file.split('/');
-    var fn = _.last(paths);
-    return fn[0] != '_' && fn[0] != '.';
-  };
-
-  grunt.filenameMatchesWildcard = function (pattern) {
-    if (_.isNull(pattern) || _.isEmpty(pattern)) {
-      return function (file) {
-        return true;
-      };
-    }
-
-    return function (file) {
-      var paths = file.split('/');
-      var fn = _.last(paths);
-
-      var rex = pattern.replace(/\./g, '\\.').replace(/\*/g, '.*');
-      rex = rex.replace(/\{(.*?)\}/g, '\($1\)').replace(/,/g, '|');
-      rex = '^'+rex+'$';
-      // if (grunt.debug) console.log("Wildcare regex: "+rex);
-      var re = new RegExp(rex);
-      return fn.match(re);
-    };
-  };
-
-
-  grunt.locateFile = function (filename) {
-    var fileVersions = _(grunt.sources).map(function (src) {
-      return src+'/'+filename;
-    }).filter(function (path) {
-      return grunt.file.exists(path);
-    });
-
-    if (fileVersions.isEmpty()) {
-      return null;
-    } else {
-      return fileVersions.first();
-    }
-  };
-
-  grunt.locateFiles = function (path, pattern) {
-    var sources = _(grunt.sources).map(function (src) {
-      return src+'/'+path;
-    }).filter(function (src) {
-      return grunt.file.exists(src) && fs.statSync(src).isDirectory();
-    }).value();
-
-    var matchesPattern = grunt.filenameMatchesWildcard(pattern);
-    var names = _(sources).map(function (src) {
-      var files = fs.readdirSync(src);
-      files = _(files).filter(function (name) {
-        var filename = src+'/'+name;
-        return fs.statSync(filename).isFile();
-      }).value();
-      // if (grunt.debug) console.log("Found files named: "+files);
-      return files;
-    }).flatten().filter(function (str) {
-      // if (grunt.debug) console.log("Checking name: "+str);
-      return str != "" && matchesPattern(str);
-    }).uniq();
-    if (names.isEmpty())
-      return [];
-    // if (grunt.debug) console.log("Found files named: "+names);
-
-    var files = names.map(function (name) {
-      // if (grunt.debug) console.log("Looking for files named: "+name);
-      return _(sources).map(function (src) {
-        return src+'/'+name;
-      }).filter(function (filename) {
-        // if (grunt.debug) console.log("Checking file: "+filename);
-        return grunt.file.exists(filename);
-      }).first();
-    }).value();
-    // if (grunt.debug) console.log("Found files: "+files);
-    return files;
-
-
-    // if (grunt.debug) console.log("Locating files: "+filename);
-    // var fileVersions = _(grunt.sources).map(function (src) {
-    //   return src+'/'+filename;
-    // }).filter(function (path) {
-    //   if (grunt.debug) console.log("Testing path: "+path+" -> "+grunt.file.exists(path));
-    //   return grunt.file.exists(path);
-    // }).value();
-    // return fileVersions;
-  }
-
-  grunt.locateSets = function (path) {
-    var sources = _(grunt.sources).map(function (src) {
-      return src+'/'+path;
-    }).filter(function (src) {
-      return grunt.file.exists(src) && fs.statSync(src).isDirectory();
-    }).value();
-
-    return _(sources).map(function (src) {
-      return _(fs.readdirSync(src)).filter(function (dirset) {
-        var path = src+'/'+dirset;
-        return fs.statSync(path).isDirectory();
-      }).value();
-    }).flatten().uniq().value();
-  };
-
-  grunt.locateSetFiles = function (path, set, pattern, key) {
-    // if (grunt.debug) console.log("\nLocate set files: "+path+", "+set+", "+pattern+", "+key);
-    var sources = _(grunt.sources).map(function (src) {
-      return src+'/'+path+'/'+set;
-    }).filter(function (src) {
-      return grunt.file.exists(src) && fs.statSync(src).isDirectory();
-    });
-    // if (grunt.debug) console.log(" in sources: "+sources);
-
-    if (!!key) {
-      var keyedSources = sources.map(function (src) {
-        return src+'/'+key;
-      }).filter(function (keyfile) {
-        // if (grunt.debug) console.log("Checking keyed source: "+keyfile);
-        return grunt.file.exists(keyfile);
-      });
-
-      if (!keyedSources.isEmpty()) {
-        // if (grunt.debug) console.log("Found keyed sources: "+keyedSources);
-        return [ keyedSources.first() ];
-      }
-    }
-
-    var matchesPattern = grunt.filenameMatchesWildcard(pattern);
-    var names = _(sources).map(function (src) {
-      var files = fs.readdirSync(src);
-      files = _(files).filter(function (name) {
-        var filename = src+'/'+name;
-        return fs.statSync(filename).isFile();
-      }).value();
-      // if (grunt.debug) console.log("Found files named: "+files);
-      return files;
-    }).flatten().filter(function (str) {
-      // if (grunt.debug) console.log("Checking name: "+str);
-      return str != "" && matchesPattern(str);
-    }).uniq();
-    if (names.isEmpty())
-      return [];
-    // if (grunt.debug) console.log("Found files named: "+names);
-
-    var files = names.map(function (name) {
-      // if (grunt.debug) console.log("Looking for files named: "+name);
-      return _(sources).map(function (src) {
-        return src+'/'+name;
-      }).filter(function (filename) {
-        // if (grunt.debug) console.log("Checking file: "+filename);
-        return grunt.file.exists(filename);
-      }).first();
-    }).value();
-    // if (grunt.debug) console.log("Found files: "+files);
-    return files;
-  };
+  //  load utils early, we need them
+  require('./util.js')(grunt, _);
 
   //  start with basic information used by all the tasks
   var pkg = grunt.file.readJSON('package.json');
@@ -208,7 +50,7 @@ module.exports = function (grunt) {
   var tmp = themeSrc+'/tmp';
   grunt.sources.unshift(tmp);
 
-  var bootstrapdir = grunt.locateFile('node_modules/bootstrap');
+  var bootstrapdir = grunt.wb.locateFile('node_modules/bootstrap');
   if (grunt.file.exists(bootstrapdir+'/sass')) {
     if (grunt.debug) console.log("Selecting SASS");
     grunt.stylesheets = 'sass';
@@ -265,7 +107,7 @@ module.exports = function (grunt) {
     'uglify', 
     grunt.stylesheets, // either less or sass
     // 'image_resize',
-    // 'responsive_images',
+    'responsive_images',
     'imagemin',
     // 'markdown'
   ]);

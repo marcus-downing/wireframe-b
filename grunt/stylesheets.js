@@ -60,20 +60,20 @@ module.exports = function (grunt, _) {
 
   //  locate files
   var base_files = [grunt.dirs.base+'/'+scheme+'/bootstrap'+extension];
-  var all_files = grunt.locateSetFiles(scheme, "all", wildcard, "all"+extension);
-  var main_core_files = grunt.locateSetFiles(scheme, "main", '_'+wildcard);
-  var main_files = grunt.locateSetFiles(scheme, "main", wildcard, "main"+extension);
-  var admin_files = grunt.locateSetFiles(scheme, "admin", wildcard, "admin"+extension);
-  var editor_files = grunt.locateSetFiles(scheme, "editor", wildcard, "editor"+extension);
+  var all_files = grunt.wb.locateSetFiles(scheme, "all", wildcard, "all"+extension);
+  var main_core_files = grunt.wb.locateSetFiles(scheme, "main", '_'+wildcard);
+  var main_files = grunt.wb.locateSetFiles(scheme, "main", wildcard, "main"+extension);
+  var admin_files = grunt.wb.locateSetFiles(scheme, "admin", wildcard, "admin"+extension);
+  var editor_files = grunt.wb.locateSetFiles(scheme, "editor", wildcard, "editor"+extension);
 
-  var responsive_file = grunt.locateFile(scheme+'/common/_responsive'+extension);
+  var responsive_file = grunt.wb.locateFile(scheme+'/common/_responsive'+extension);
   var tmp_responsive_file = grunt.dirs.tmp+'/less/_responsive.less';
   var tmp_main_file = grunt.dirs.tmp+'/less/_main.less';
 
   var responsive_code = grunt.file.read(responsive_file);
   responsive_code = grunt.template.process(responsive_code, { data: {
     import_stylesheet_set: function (set) {
-      var set_files = grunt.locateSetFiles(scheme, set, wildcard, set+extension);
+      var set_files = grunt.wb.locateSetFiles(scheme, set, wildcard, set+extension);
       return createImportScript(set_files, path.dirname(tmp_responsive_file));
     },
     import_base_variables: function () {
@@ -86,14 +86,14 @@ module.exports = function (grunt, _) {
   grunt.file.write(tmp_responsive_file, responsive_code);
 
   // fonts
-  var font_stylesheets = _(grunt.locateSets("fonts")).map(function (fontname) {
-    return grunt.locateSetFiles("fonts", fontname, "stylesheet.css");
+  var font_stylesheets = _(grunt.wb.locateSets("fonts")).map(function (fontname) {
+    return grunt.wb.locateSetFiles("fonts", fontname, "stylesheet.css");
   }).flatten().value();
   var tmp_font_file = grunt.dirs.tmp+'/less/_fonts.less';
   writeImportFile(font_stylesheets, tmp_font_file);
 
-  var font_files = _(grunt.locateSets("fonts")).map(function (fontname) {
-    return grunt.locateFiles("fonts/"+fontname, "*.{eot,woff,ttf}");
+  var font_files = _(grunt.wb.locateSets("fonts")).map(function (fontname) {
+    return grunt.wb.locateFiles("fonts/"+fontname, "*.{eot,woff,ttf}");
   }).flatten().value();
   if (grunt.debug) console.log("Font files: "+JSON.stringify(font_files, null, 4));
 
@@ -115,7 +115,7 @@ module.exports = function (grunt, _) {
   if (grunt.debug) console.log("Admin stylesheets: "+JSON.stringify(admin_files, null, 4));
   writeImportFile(main_files, tmp_main_file);
 
-  var stylesheetSets = _(grunt.locateSets(scheme)).without('main', 'admin', 'all', 'common', 'xs-only', 'sm-only', 'sm', 'md-only', 'md', 'lg').value();
+  var stylesheetSets = _(grunt.wb.locateSets(scheme)).without('main', 'admin', 'all', 'common', 'xs-only', 'sm-only', 'sm', 'md-only', 'md', 'lg').value();
   if (grunt.debug) console.log("Stylesheet sets: "+JSON.stringify(stylesheetSets, null, 4));
 
 
@@ -186,7 +186,7 @@ module.exports = function (grunt, _) {
     });
 
     _(stylesheetSets).each(function (set) {
-      var setFiles = grunt.locateSetFiles(scheme, set, wildcard, set+extension);
+      var setFiles = grunt.wb.locateSetFiles(scheme, set, wildcard, set+extension);
 
       if (!_(setFiles).isEmpty()) {
         var setConfig = { less: { } };

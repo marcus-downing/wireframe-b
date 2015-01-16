@@ -4,19 +4,19 @@ module.exports = function (grunt, _) {
 
 
   var base_js = [grunt.dirs.base+"/dist/js/bootstrap.min.js"];
-  var all_js = grunt.locateSetFiles("js", "all", "*.js", "all.js");
-  var main_js = grunt.locateSetFiles("js", "main", "*.js", "main.js");
-  var admin_js = grunt.locateSetFiles("js", "admin", "*.js", "admin.js");
+  var all_js = grunt.wb.locateSetFiles("js", "all", "*.js", "all.js");
+  var main_js = grunt.wb.locateSetFiles("js", "main", "*.js", "main.js");
+  var admin_js = grunt.wb.locateSetFiles("js", "admin", "*.js", "admin.js");
 
   main_js = _.union(base_js, all_js, main_js);
   admin_js = _.union(base_js, all_js, admin_js);
 
-  var jsSets = _(grunt.locateSets('js')).without('main').value();
+  var jsSets = _(grunt.wb.locateSets('js')).without('main').value();
   if (grunt.debug) console.log("Javascript sets: "+JSON.stringify(jsSets, null, 4));
 
   grunt.config.merge({
     jshint: {
-      all: grunt.locateFiles('js')
+      all: grunt.wb.locateFiles('js')
     },
 
     concat: {
@@ -42,7 +42,7 @@ module.exports = function (grunt, _) {
 
     watch: {
       javascripts: {
-        files: grunt.locateFiles('js'),
+        files: grunt.wb.locateFiles('js'),
         tasks: ['jshint', 'concat', 'uglify']
       }
     }
@@ -51,7 +51,7 @@ module.exports = function (grunt, _) {
   // build many sets
 
     _(jsSets).each(function (set) {
-    var setFiles = grunt.locateSetFiles('js', set, '*.js');
+    var setFiles = grunt.wb.locateSetFiles('js', set, '*.js');
 
     if (!_(setFiles).isEmpty()) {
       var setConfig = { concat: { }, uglify: { } };

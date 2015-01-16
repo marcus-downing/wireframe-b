@@ -22,7 +22,7 @@ module.exports = function (grunt, _) {
 
   // register widgets
   var temp_widgets_file = grunt.dirs.tmp+'/lib/_widgets.php';
-  var widgets_files = grunt.locateSetFiles("views", "widgets", "*.php");
+  var widgets_files = grunt.wb.locateSetFiles("views", "widgets", "*.php");
   if (grunt.debug) console.log("Widgets: "+JSON.stringify(widgets_files, null, 4));
   var widget_namespaces = {};
   var namespace_regex = /namespace (.*);/;
@@ -47,12 +47,37 @@ module.exports = function (grunt, _) {
 
   grunt.file.write(temp_widgets_file, widgets_content+'\n\n'+widgets_register);
 
-  var functions_files = grunt.locateSetFiles("lib", "all", "*.php");
-  functions_files.unshift(grunt.locateFile("lib/common/_before_functions.php"));
+
+  // process image sizes
+  var temp_images_file = grunt.dirs.tmp+'/lib/_images.php';
+  var image_sizes = grunt.themeConfig.image_sizes;
+  var default_image_size = _(grunt.themeConfig.image_sizes).where({ 'name': 'default' }).first();
+
+  var images_template = grunt.file.read(grunt.wb.locateFile("lib/common/_image_sizes.php"));
+  var images_code = grunt.template.process(images_template, { data: {
+    default_width: default_image_size.width,
+    default_height: default_image_size.height,
+    register_image_sizes: function () {
+      return _(image_sizes).map(function (image_size) {
+        return "  add_image_size('"+image_size.name+"', "+image_size.width+", "+image_size.height+");\n";
+      }).value().join("");
+    },
+    image_size_names: function () {
+      return _(image_sizes).map(function (image_size) {
+        return "      '"+image_size.name+"' => '"+image_size.title+"',\n";
+      }).value().join("");
+    }
+  }});
+  grunt.file.write(temp_images_file, images_code);
+
+  // collate all the files
+  var functions_files = grunt.wb.locateSetFiles("lib", "all", "*.php");
+  functions_files.unshift(grunt.wb.locateFile("lib/common/_before_functions.php"));
   functions_files.push(temp_widgets_file);
-  functions_files.push(grunt.locateFile("lib/common/_after_functions.php"));
-  var main_files = grunt.locateSetFiles("lib", "main", "*.php");
-  var admin_files = grunt.locateSetFiles("lib", "admin", "*.php");
+  functions_files.push(temp_images_file);
+  functions_files.push(grunt.wb.locateFile("lib/common/_after_functions.php"));
+  var main_files = grunt.wb.locateSetFiles("lib", "main", "*.php");
+  var admin_files = grunt.wb.locateSetFiles("lib", "admin", "*.php");
 
   var concat_php_options = {
     banner: '<?php\n',
