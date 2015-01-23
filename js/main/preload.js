@@ -1,10 +1,11 @@
 function preload(urls) {
   jQuery(function ($) {
-    $("body").append("<div id='_preload' class='invisible'></div>");
-    var container = $("#_preload");
-
-    _.each(urls, function (url) {
-      container.append("<img src='"+url+"'/>");
+    var preloadBlocks = _.map(urls, function (url) {
+      return "<img src='"+url+"'/>";
     });
+    if (!_.isEmpty(preloadBlocks)) {
+      var preload = "<div id='_preload' class='invisible'>"+preloadBlocks.join('')+"</div>";
+      $("body").append(preload);
+    }
   });  
 }

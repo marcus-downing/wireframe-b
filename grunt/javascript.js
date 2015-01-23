@@ -4,6 +4,7 @@ module.exports = function (grunt, _) {
 
 
   var base_js = [grunt.dirs.base+"/dist/js/bootstrap.min.js"];
+  var lib_js = grunt.wb.locateSetFiles("js", "lib", "*.js");
   var all_js = grunt.wb.locateSetFiles("js", "all", "*.js", "all.js");
   var main_js = grunt.wb.locateSetFiles("js", "main", "*.js", "main.js");
   var admin_js = grunt.wb.locateSetFiles("js", "admin", "*.js", "admin.js");
