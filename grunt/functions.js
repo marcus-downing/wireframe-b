@@ -72,7 +72,6 @@ module.exports = function (grunt, _) {
 
   // collate all the files
   var functions_files = grunt.wb.locateSetFiles("lib", "all", "*.php");
-  functions_files.unshift(grunt.wb.locateFile("lib/common/_before_functions.php"));
   functions_files.push(temp_widgets_file);
   functions_files.push(temp_images_file);
   functions_files.push(grunt.wb.locateFile("lib/common/_after_functions.php"));
