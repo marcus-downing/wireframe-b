@@ -302,7 +302,7 @@ class navigation extends \WP_Widget {
 
     //  draw the list
     if (!empty($posts) || $show_home) {
-      echo "<div class='list-group'>";
+      echo "<div class='list-group navigation-list-group'>";
       if ($show_home) {
         $url = esc_attr(site_url('/'));
         echo "<a href='$url' class='list-group-item' id='nav-item-0' data-nav-id='0'>Home</a>";

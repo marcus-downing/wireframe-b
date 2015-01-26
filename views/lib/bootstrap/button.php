@@ -1,24 +1,6 @@
 <?php
 
-/*
- Functions to pull in parts of the Bootstrap layout
-*/
-
-
-/*
-  \bootstrap\skiplink();
-*/
-function skiplink() {
-  echo "<a class='sr-only sr-only-focusable' href='#content'>".__('Skip to main content', 'bootstrap').'</a>';
-}
-
-
-/*
-  \bootstrap\glyphicon('search');
-*/
-function glyphicon($icon) {
-  echo "<span class='glyphicon glyphicon-".esc_attr($icon)."' aria-hidden='true'></span>";
-}
+namespace bootstrap;
 
 /*
   \bootstrap\button('Submit', array(
@@ -26,6 +8,10 @@ function glyphicon($icon) {
     'btn-class' => 'primary',
     'id' => 'contact-form-submit-button'
   ));
+
+  Show a button, the Bootstrap way.
+
+  http://getbootstrap.com/css/#buttons
 */
 function button($text, $args = array()) {
   $args = wp_parse_args((array) $args, array(

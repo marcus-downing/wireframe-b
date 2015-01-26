@@ -1,5 +1,7 @@
 <?php
 
+namespace wireframe_b;
+
 register_sidebar(array(
   'name' => 'Left Navigation',
   'id' => 'left',

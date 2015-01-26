@@ -8,6 +8,7 @@ This template is used for the home page. This is typically a special layout that
 
 ?><%=
 template({
-  'layout': 'home'
+  'layout': 'home',
+  'content': 'home'
 })
 %>

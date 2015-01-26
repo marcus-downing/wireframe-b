@@ -1,5 +1,7 @@
 <?php
 
+namespace wireframe_b;
+
 function set_body_id($id) {
   $the_id = &wireframe_b\the_global('body', 'id');
   $the_id = $id;
@@ -40,8 +42,7 @@ function body_preload($url) {
   }
 }
 
-add_action('wp_footer', 'wireframe_b_write_preload', 99);
-function wireframe_b_write_preload () {
+add_action('wp_footer', function () {
   $the_preload = &wireframe_b\the_global('body', 'preload');
   
   if (!is_array($the_preload)) return;
@@ -49,4 +50,4 @@ function wireframe_b_write_preload () {
   if (empty($urls)) return;
 
   echo "<script>preload(".json_encode($urls).");</script>";
-}
+}, 99);

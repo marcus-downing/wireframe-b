@@ -1,5 +1,10 @@
 <?php
 
+namespace wireframe_b;
+
+/*
+Remove all the links that don't make sense for non-blogs
+*/
 
 remove_action('wp_head', 'rsd_link');
 remove_action('wp_head', 'wp_generator');

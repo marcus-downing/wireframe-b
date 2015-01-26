@@ -1,3 +1,7 @@
+<div id='top'>
+<%= include_header('top') %>
+</div>
+
 <div id='masthead' class='site-header' role='banner'>
 <%= include_header('masthead') %>
 </div>
