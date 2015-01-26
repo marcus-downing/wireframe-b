@@ -1,7 +1,7 @@
 {
   "image_sizes": [
     { "name": "default", "title": "Default", "width": 640, "height": 480 },
-    { "name": "icon", "title": "Icon", "width": 128, "height": 128 },
-    { "name": "jumbotron", "title": "Jumbotron bg", "width": 2048, "height": 256 }
+    { "name": "icon", "title": "Icon", "width": 64, "height": 64, "aspectRatio": false },
+    { "name": "jumbotron", "title": "Jumbotron bg", "width": 1024, "height": 512, "aspectRatio": false }
   ]
 }

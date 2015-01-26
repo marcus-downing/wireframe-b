@@ -7,8 +7,10 @@ There are two sorts of images:
  
 A photo, background etc is well suited to the first type. A logo or furniture element is well suited to the second.
 
-Put images into folders called 'images/@1x', 'images/@2x' and 'images/@4x' to 
+Put images into folders called 'images/@1x', 'images/@2x' and 'images/@4x' to have them resized precisely.
 
+Configure image sizes in `etc/images.json`, using the options for grunt-responsive-images:
+  https://github.com/andismith/grunt-responsive-images
 */
 
 module.exports = function (grunt, _) {
@@ -156,4 +158,9 @@ module.exports = function (grunt, _) {
   //     }
   //   })
   // }
+
+
+
+  //  Favicons galore
+  
 };
