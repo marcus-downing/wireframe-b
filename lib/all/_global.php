@@ -6,13 +6,20 @@ global $wireframe_b_global;
 if (!is_array($wireframe_b_global))
   $wireframe_b_global = array();
 
-/*
-  $value = memoise('keyname', function () { });
-  The memoise function can be used to store the values of a lengthy calculation to avoid having to do it more than once per request.
-
-  If the $store parameter is set, the calculation will use WordPress' transients API to store the value for a longer term
-*/
-
+/**
+ *  Remember a value, don't recalculate it
+ *
+ *  <code>
+ *  $value = memoise('keyname', function () { ... });
+ *  </code>
+ *
+ *  The memoise function can be used to store the values of a lengthy calculation to avoid having to do it more than once per request.
+ *
+ * @param string $key      A reliable code by which to remember this value.
+ * @param function $fn     A function to call that returns the value.
+ * @param boolean $store   Whether to use the WordPress transients API to store the value between requests. Default to `false`.
+ * @return any value.
+ */
 function memoise($key, callable $fn, $store = false) {
   $value = &the_global('memo', $key);
   if (!is_null($memo))
@@ -30,12 +37,23 @@ function memoise($key, callable $fn, $store = false) {
   // return $value;
 }
 
-/*
-  Namespaced globals.
-
-  set_global('group', 'key', $value);
-  $value = get_global('group', 'key');
-*/
+/**
+ *  Namespaced globals.
+ *
+ *  <code>
+ *  set_global('group', 'key', $value);
+ *  $value = get_global('group', 'key');
+ *  </code>
+ *
+ *  Globals are bad, but PHP tends to use a lot of them anyway. Using namespaced globals can at least prevent accidental clashes between them.
+ *
+ *  Use this function to get access to a reference to a namespaced global value.
+ *  
+ *  @param string $group    Category
+ *  @param string $key      The name of the global value to access.
+ *  @param string $subkey   Assuming the main value is an associative array, the subvalue to access.
+ *  @return reference       A reference to a namespaced global value.
+ */
 function &the_global($group, $key = null, $subkey = null) {
   global $wireframe_b_global;
   if (!is_array($wireframe_b_global[$group]))

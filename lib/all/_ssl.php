@@ -23,8 +23,7 @@ add_filter('the_content', __NAMESPACE__.'\correct_https', 1);
 add_filter('script_loader_src', __NAMESPACE__.'\correct_https');
 add_filter('style_loader_src', __NAMESPACE__.'\correct_https');
 
-add_filter('wp_get_nav_menu_items', __NAMESPACE__.'\nav_menu_items_ssl', 10, 3);
-function nav_menu_items_ssl($items, $menu, $args) {
+add_filter('wp_get_nav_menu_items', function ($items, $menu, $args) {
   $newitems = array();
   foreach ($items as $item) {
     if (is_object($item) && is_string($item->url)) {
@@ -33,7 +32,7 @@ function nav_menu_items_ssl($items, $menu, $args) {
     $newitems[] = $item;
   }
   return $newitems;
-}
+}, 10, 3);
 
 add_filter('post_thumbnail_html', __NAMESPACE__.'\correct_https');
 

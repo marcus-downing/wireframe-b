@@ -2,9 +2,15 @@
 
 namespace wireframe_b;
 
-/*
-  Function to output <picture> and srcset= correctly
-*/
+/**
+ *  Output responsive images correctly.
+ * 
+ *  <code>
+ *  the_picture('logo.png');
+ *  </code>
+ *
+ *  Look for an image in the theme's `images` folder, and write an `<img>` tag with appropriate srcset tags.
+ */
 
 function the_picture($file, $args = array()) {
   $args = wp_parse_args($args, array(
