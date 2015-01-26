@@ -77,7 +77,6 @@ module.exports = function (grunt, _) {
   functions_files.push(grunt.wb.locateFile("lib/common/_after_functions.php"));
   var main_files = grunt.wb.locateSetFiles("lib", "main", "*.php");
   var view_lib_files = grunt.wb.locateFilesDeep("views/lib", "*.php");
-  main_files = main_files.concat(view_lib_files);
   var admin_files = grunt.wb.locateSetFiles("lib", "admin", "*.php");
 
   var concat_php_options = {
@@ -97,6 +96,12 @@ module.exports = function (grunt, _) {
         options: concat_php_options,
         src: main_files,
         dest: grunt.dest+'/lib/main.php',
+      },
+
+      view_php: {
+        options: concat_php_options,
+        src: view_lib_files,
+        dest: grunt.dest+'/lib/view.php',
       },
 
       admin_php: {

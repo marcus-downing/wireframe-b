@@ -1,18 +1,18 @@
 <?php
 
-namespace bootstrap;
-
-/*
-  \bootstrap\button('Submit', array(
-    'btn-type' => 'submit',
-    'btn-class' => 'primary',
-    'id' => 'contact-form-submit-button'
-  ));
-
-  Show a button, the Bootstrap way.
-
-  http://getbootstrap.com/css/#buttons
-*/
+/**
+ *  Show a button, with Bootstrap markup. Selects <button> or <a> depending on arguments.
+ *
+ *  <code>
+ *  \bootstrap\button('Submit', array(
+ *    'btn-type' => 'submit',
+ *    'btn-class' => 'primary',
+ *    'id' => 'contact-form-submit-button'
+ *  ));
+ *  </code>
+ *
+ *  http://getbootstrap.com/css/#buttons
+ */
 function button($text, $args = array()) {
   $args = wp_parse_args((array) $args, array(
     'btn-type' => 'button',

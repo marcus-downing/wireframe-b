@@ -37,6 +37,7 @@
   ?>
 </head>
 <body <?php body_id(); body_class(); body_data(); ?>>
+<?php skiplink(); ?>
 <div id='body-wrapper'>
 <header id='header'>
 <div id='header-inner'>

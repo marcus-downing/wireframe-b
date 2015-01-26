@@ -1,24 +1,25 @@
 <?php
 
-namespace wireframe_b;
-
-function set_body_id($id) {
-  $the_id = &wireframe_b\the_global('body', 'id');
-  $the_id = $id;
-}
-
+/**
+ *  Write the body's ID attribute, if it has one.
+ *
+ *  <code>
+ *  body_id()
+ *  </code>
+ */
 function body_id() {
   $the_id = &wireframe_b\the_global('body', 'id');
   if (empty($the_id)) return;
   echo ' id = "'.esc_attr($the_id).'"';
 }
 
-function set_body_data($key, $value) {
-  $the_data = &wireframe_b\the_global('body', 'data');
-  if (!is_array($data)) $the_data = array();
-  $the_data[$key] = $value;
-}
-
+/**
+ *  Write the body's data attributes, if it has any.
+ *
+ *  <code>
+ *  body_data()
+ *  </code>
+ */
 function body_data() {
   $the_data = &wireframe_b\the_global('body', 'data');
   if (!is_array($the_data)) return;
@@ -29,6 +30,17 @@ function body_data() {
     $key = slugify($key);
     echo " data-$key='".esc_attr($value)."'";
   }
+}
+
+function set_body_id($id) {
+  $the_id = &wireframe_b\the_global('body', 'id');
+  $the_id = $id;
+}
+
+function set_body_data($key, $value) {
+  $the_data = &wireframe_b\the_global('body', 'data');
+  if (!is_array($data)) $the_data = array();
+  $the_data[$key] = $value;
 }
 
 function body_preload($url) {
