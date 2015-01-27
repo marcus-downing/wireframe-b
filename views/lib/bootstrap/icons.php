@@ -1,18 +1,18 @@
 <?php
 
 /**
- *  Show an icon from any of the valid sets.
+ * Show an icon from any of the valid sets.
  *
- *  <code>
- *  the_icon('dashicons-search', 'Search this website');
- *  </code>
+ * <code>
+ * the_icon('dashicons-search', 'Search this website');
+ * </code>
  *
- *  This will attempt to pick the right icon set based on the name starting with `fa-`, `dashicons-`, `glyphicon-` or `icon-`.
+ * This will attempt to pick the right icon set based on the name starting with `fa-`, `dashicons-`, `glyphicon-` or `icon-`.
  *
- *  Be aware that the each icon set has its own rules for font size, line height etc.
+ * Be aware that the each icon set has its own rules for font size, line height etc.
  *
- *  @param string $icon  The icon code.
- *  @param string $alt  Optional title.
+ * @param string $icon  The icon code.
+ * @param string $alt  Optional title.
  */
 function the_icon($icon, $alt = null) {
   if (preg_match('/^fa-/', $icon))
@@ -26,11 +26,11 @@ function the_icon($icon, $alt = null) {
 }
 
 /**
- *  Show an icon from the theme's own icon set.
+ * Show an icon from the theme's own icon set.
  *
- *  <code>
- *  font_icon('search');
- *  </code>
+ * <code>
+ * font_icon('search');
+ * </code>
  */
 function font_icon($icon, $alt = null) {
   wp_enqueue_style('icons');
@@ -43,13 +43,13 @@ function font_icon($icon, $alt = null) {
 }
 
 /**
- *  Show an icon from the WordPress Dashicons set.
+ * Show an icon from the WordPress Dashicons set.
  *
- *  <code>
- *  dashicon('search');
- *  </code>
+ * <code>
+ * dashicon('search');
+ * </code>
  *
- *  @link https://developer.wordpress.org/resource/dashicons/
+ * @link https://developer.wordpress.org/resource/dashicons/
  */
 function dashicon($icon, $alt = null) {
   wp_enqueue_style('dashicons');
@@ -62,13 +62,13 @@ function dashicon($icon, $alt = null) {
 }
 
 /**
- *  Show an icon from the Glyphicons Halflings set.
+ * Show an icon from the Glyphicons Halflings set.
  *
- *  <code>
- *  glyphicon('search');
- *  </code>
+ * <code>
+ * glyphicon('search');
+ * </code>
  *
- *  @link http://getbootstrap.com/components/#glyphicons
+ * @link http://getbootstrap.com/components/#glyphicons
  */
 function glyphicon($icon, $alt = null) {
   wp_enqueue_style('glyphicons');
@@ -81,13 +81,13 @@ function glyphicon($icon, $alt = null) {
 }
 
 /**
- *  Show an icon from the Font Awesome set.
+ * Show an icon from the Font Awesome set.
  *
- *  <code>
- *  fa_icon('o-twitter');
- *  </code>
+ * <code>
+ * fa_icon('o-twitter');
+ * </code>
  *
- *  @link http://fontawesome.io/icons/
+ * @link http://fontawesome.io/icons/
  */
 function fa_icon($icon, $alt = null) {
   wp_enqueue_style('fontawesome');

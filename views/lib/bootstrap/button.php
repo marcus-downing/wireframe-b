@@ -1,17 +1,17 @@
 <?php
 
 /**
- *  Show a button, with Bootstrap markup. Selects <button> or <a> depending on arguments.
+ * Show a button, with Bootstrap markup. Selects <button> or <a> depending on arguments.
  *
- *  <code>
- *  \bootstrap\button('Submit', array(
- *    'btn-type' => 'submit',
- *    'btn-class' => 'primary',
- *    'id' => 'contact-form-submit-button'
- *  ));
- *  </code>
+ * <code>
+ * \bootstrap\button('Submit', array(
+ *   'btn-type' => 'submit',
+ *   'btn-class' => 'primary',
+ *   'id' => 'contact-form-submit-button'
+ * ));
+ * </code>
  *
- *  http://getbootstrap.com/css/#buttons
+ * http://getbootstrap.com/css/#buttons
  */
 function button($text, $args = array()) {
   $args = wp_parse_args((array) $args, array(

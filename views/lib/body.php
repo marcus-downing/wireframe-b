@@ -1,11 +1,11 @@
 <?php
 
 /**
- *  Write the body's ID attribute, if it has one.
+ * Write the body's ID attribute, if it has one.
  *
- *  <code>
- *  body_id()
- *  </code>
+ * <code>
+ * body_id()
+ * </code>
  */
 function body_id() {
   $the_id = &wireframe_b\the_global('body', 'id');
@@ -14,11 +14,11 @@ function body_id() {
 }
 
 /**
- *  Write the body's data attributes, if it has any.
+ * Write the body's data attributes, if it has any.
  *
- *  <code>
- *  body_data()
- *  </code>
+ * <code>
+ * body_data()
+ * </code>
  */
 function body_data() {
   $the_data = &wireframe_b\the_global('body', 'data');

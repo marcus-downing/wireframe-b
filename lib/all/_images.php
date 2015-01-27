@@ -3,13 +3,22 @@
 namespace wireframe_b;
 
 /**
- *  Output responsive images correctly.
+ * Output responsive images correctly.
  * 
- *  <code>
- *  the_picture('logo.png');
- *  </code>
+ * <code>
+ * the_picture('logo.png');
+ * </code>
  *
- *  Look for an image in the theme's `images` folder, and write an `<img>` tag with appropriate srcset tags.
+ * Look for an image in the theme's `images` folder, and write an `<img>` tag with appropriate srcset tags.
+ *
+ * Options:
+ *  - `string 'alt'`: The image's `alt` attribute
+ *  - `string 'title': The image's `title` attribute
+ *  - `boolean 'echo'`: Whether to echo the output or simply return it. Default true.
+ *
+ * @param string $file   Either a filename relative to the theme's images folder, or a media ID
+ * @param array $args    Array of parameters.
+ * @return string        The output, if you set `'echo' => false` in the options
  */
 
 function the_picture($file, $args = array()) {
