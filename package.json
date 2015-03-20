@@ -1,11 +1,11 @@
 {
-  "name": "wireframe-b",
-  "description": "Wireframe b, a WordPress theme toolkit",
+  "name": "plugin-b",
+  "description": "Plugin b, a WordPress plugin toolkit",
   "version": "0.0.0",
-  "homepage": "https://github.com/marcusatbang/wireframe-b",
+  "homepage": "https://github.com/marcusatbang/plugin-b",
   "repository": { 
     "type" : "git",
-    "url" : "http://github.com/marcusatbang/wireframe-b.git"
+    "url" : "http://github.com/marcusatbang/plugin-b.git"
   },
   "license": "none",
   "author": {
@@ -31,8 +31,6 @@
     "grunt-contrib-watch": "~0.6.1",
 
     "grunt-webfont": "~0.4.8",
-
-    "bootstrap": "git://github.com/twbs/bootstrap#master",
 
     "lodash-node": "",
     "ini": "~1.3.2"
