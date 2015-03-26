@@ -9,7 +9,7 @@ namespace wireframe_b;
  * the_picture('logo.png');
  * </code>
  *
- * Look for an image in the theme's `images` folder, and write an `<img>` tag with appropriate srcset tags.
+ * Look for an image in the theme's `images` folder, and write an `<img>` tag with appropriate `srcset` tags.
  *
  * Options:
  *  - `string 'alt'`: The image's `alt` attribute
@@ -35,7 +35,7 @@ function the_picture($file, $args = array()) {
   $file_pathinfo = pathinfo($file);
 
   $srcset = array();
-  foreach (array("2x", "4x") as $x) {
+  foreach (array("2x", "3x", "4x") as $x) {
     $bigurl = $pathinfo['dirname'].'/'.$pathinfo['filename'].'@'.$x.'.'.$pathinfo['extension'];
     $bigfilename = $file_pathinfo['dirname'].'/'.$pathinfo['filename'].'@'.$x.'.'.$pathinfo['extension'];
 

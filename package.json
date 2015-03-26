@@ -31,7 +31,9 @@
     "grunt-contrib-watch": "~0.6.1",
 
     "grunt-webfont": "~0.4.8",
+    "grunt-favicons": "~0.6.4",
 
+    "underscores": "git://github.com/automattic/_s#master",
     "bootstrap": "git://github.com/twbs/bootstrap#master",
 
     "lodash-node": "",

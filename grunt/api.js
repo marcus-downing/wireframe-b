@@ -1,4 +1,4 @@
-//  Compile the WordPress templates
+//  Compile the WordPress templates for API endpoints
 module.exports = function (grunt, _) {
   var api_files = grunt.wb.locateSetFiles("views", "api", "*.php");
   // var embed_files = grunt.wb.locateSetFiles("views", "embed", "*.php");

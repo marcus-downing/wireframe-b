@@ -37,17 +37,23 @@ module.exports = function (grunt, _) {
     image_size_2x.width = image_size.width * 2;
     image_size_2x.height = image_size.height * 2;
 
+    var image_size_3x = {};
+    _.defaults(image_size_3x, image_size);
+    image_size_3x.name = image_size.name+'@3x';
+    image_size_3x.width = image_size.width * 3;
+    image_size_3x.height = image_size.height * 3;
+
     var image_size_4x = {};
     _.defaults(image_size_4x, image_size);
     image_size_4x.name = image_size.name+'@4x';
     image_size_4x.width = image_size.width * 4;
     image_size_4x.height = image_size.height * 4;
 
-    return [ image_size, image_size_2x, image_size_4x ];
+    return [ image_size, image_size_2x, image_size_3x, image_size_4x ];
   }).flatten().value();
 
   var flex_image_files = _(sources).filter(function (sourcefile) {
-    return !sourcefile.includes("/images/@1x/") && !sourcefile.includes("/images/@2x/") && !sourcefile.includes("/images/@4x/");
+    return !sourcefile.includes("/images/@1x/") && !sourcefile.includes("/images/@2x/") && !sourcefile.includes("/images/@3x/") && !sourcefile.includes("/images/@4x/");
   }).map(function (sourcefile) {
     var local = grunt.wb.localFilename(sourcefile, sourceFolders);
     return { src: sourcefile, dest: tmpDir+'/'+local };
@@ -66,12 +72,21 @@ module.exports = function (grunt, _) {
     var local = grunt.wb.localFilename(sourcefile, sourceFolders).removeStart("@1x/");
     return { src: sourcefile, dest: tmpDir+'/'+local };
   }).value();
+
   var exact_image_files_2x = _(sources).filter(function (sourcefile) {
     return sourcefile.includes("/images/@2x/");
   }).map(function (sourcefile) {
     var local = grunt.wb.localFilename(sourcefile, sourceFolders).removeStart("@2x/");
     return { src: sourcefile, dest: tmpDir+'/'+local };
   }).value();
+  
+  var exact_image_files_3x = _(sources).filter(function (sourcefile) {
+    return sourcefile.includes("/images/@3x/");
+  }).map(function (sourcefile) {
+    var local = grunt.wb.localFilename(sourcefile, sourceFolders).removeStart("@3x/");
+    return { src: sourcefile, dest: tmpDir+'/'+local };
+  }).value();
+
   var exact_image_files_4x = _(sources).filter(function (sourcefile) {
     return sourcefile.includes("/images/@4x/");
   }).map(function (sourcefile) {
@@ -104,11 +119,24 @@ module.exports = function (grunt, _) {
         files: exact_image_files_2x
       },
 
+      exact_images_3x: {
+        options: {
+          sizes: [
+            { "name": "3x1x", "width": "33%", "height": "33%", "rename": false },
+            { "name": "3x2x","width": "66%", "height": "66%", "suffix": "@2x", "rename": false },
+            { "name": "3x3x","width": "100%", "height": "100%", "suffix": "@3x", "rename": false }
+          ],
+          newFilesOnly: true
+        },
+        files: exact_image_files_3x
+      },
+
       exact_images_4x: {
         options: {
           sizes: [
             { "name": "4x1x", "width": "25%", "height": "25%", "rename": false },
             { "name": "4x2x", "width": "50%", "height": "50%", "suffix": "@2x", "rename": false },
+            { "name": "4x3x", "width": "75%", "height": "75%", "suffix": "@3x", "rename": false },
             { "name": "4x4x", "width": "100%", "height": "100%", "suffix": "@4x", "rename": false }
           ],
           newFilesOnly: true
