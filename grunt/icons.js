@@ -19,4 +19,12 @@ module.exports = function (grunt, _) {
       }
     },
   });
+
+  var favicon_file = grunt.wb.locateFile("images/favicon/source.png");
+
+  grunt.config.merge({
+    favicons: {
+      
+    }
+  });
 };

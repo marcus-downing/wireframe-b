@@ -1,0 +1,5 @@
+{
+  "fonts": [
+    { "name": "Font Awesome", "src": "node_modules/font-awesome" }
+  ]
+}
