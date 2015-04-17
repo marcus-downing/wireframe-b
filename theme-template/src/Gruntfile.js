@@ -5,6 +5,6 @@ module.exports = function (grunt) {
     path.resolve("."),
     path.resolve(base)
   ];
-  grunt.dest = path.resolve("..");
+  grunt.dest = path.resolve("../dest");
   require(base+"/grunt/grunt.js")(grunt);
 };

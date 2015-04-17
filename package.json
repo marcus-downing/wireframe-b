@@ -1,11 +1,11 @@
 {
-  "name": "plugin-b",
-  "description": "Plugin b, a WordPress plugin toolkit",
+  "name": "wireframe-b",
+  "description": "Wireframe b, a WordPress theme toolkit",
   "version": "0.0.0",
-  "homepage": "https://github.com/marcusatbang/plugin-b",
+  "homepage": "https://github.com/marcusatbang/wireframe-b",
   "repository": { 
     "type" : "git",
-    "url" : "http://github.com/marcusatbang/plugin-b.git"
+    "url" : "http://github.com/marcusatbang/wireframe-b.git"
   },
   "license": "none",
   "author": {

@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "grunt": "",
-    "wireframe-b": ""
+    "wireframe-b": "git://github.com/marcusatbang/wireframe-b.git#master"
   },
   "config": {
   }
